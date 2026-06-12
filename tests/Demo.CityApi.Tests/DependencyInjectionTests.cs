@@ -1,11 +1,11 @@
+using Demo.CityApi.Caching;
 using Demo.Cities;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Demo.CityApi.Tests;
 
-public sealed class DependencyInjectionTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public sealed class DependencyInjectionTests(CityApiFactory factory)
+    : IClassFixture<CityApiFactory>
 {
     [Fact]
     public void CityServicesResolve()
@@ -14,5 +14,9 @@ public sealed class DependencyInjectionTests(WebApplicationFactory<Program> fact
 
         Assert.NotNull(scope.ServiceProvider.GetRequiredService<ICityService>());
         Assert.NotNull(scope.ServiceProvider.GetRequiredService<IUsaCityService>());
+        Assert.NotNull(
+            scope.ServiceProvider.GetRequiredService<IGeocodingCacheRepository>());
+        Assert.NotNull(
+            scope.ServiceProvider.GetRequiredService<ICityCacheSchemaInitializer>());
     }
 }

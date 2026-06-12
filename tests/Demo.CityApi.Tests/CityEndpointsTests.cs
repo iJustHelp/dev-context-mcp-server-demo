@@ -1,11 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Demo.CityApi.Tests;
 
-public sealed class CityEndpointsTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public sealed class CityEndpointsTests(CityApiFactory factory)
+    : IClassFixture<CityApiFactory>
 {
     [Fact]
     public async Task GetCityReturnsExactOrderedCityNames()
