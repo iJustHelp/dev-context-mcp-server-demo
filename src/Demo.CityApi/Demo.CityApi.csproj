@@ -11,6 +11,7 @@
     <PackageReference Include="Demo.Cities" Version="1.1.0" />
     <PackageReference Include="Formula.SimpleRepo" Version="2.8.1" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.9" />
+    <PackageReference Include="OpenMeteo.Api.Client" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

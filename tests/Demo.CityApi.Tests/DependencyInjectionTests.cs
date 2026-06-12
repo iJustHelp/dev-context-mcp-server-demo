@@ -1,6 +1,8 @@
 using Demo.CityApi.Caching;
+using Demo.CityApi.Geocoding;
 using Demo.Cities;
 using Microsoft.Extensions.DependencyInjection;
+using OpenMeteo.Api.Client;
 
 namespace Demo.CityApi.Tests;
 
@@ -18,5 +20,7 @@ public sealed class DependencyInjectionTests(CityApiFactory factory)
             scope.ServiceProvider.GetRequiredService<IGeocodingCacheRepository>());
         Assert.NotNull(
             scope.ServiceProvider.GetRequiredService<ICityCacheSchemaInitializer>());
+        Assert.NotNull(scope.ServiceProvider.GetRequiredService<IOpenMeteoClient>());
+        Assert.NotNull(scope.ServiceProvider.GetRequiredService<IGeocodingService>());
     }
 }
