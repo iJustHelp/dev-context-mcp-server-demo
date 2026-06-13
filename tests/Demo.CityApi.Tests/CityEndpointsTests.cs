@@ -18,7 +18,7 @@ public sealed class CityEndpointsTests(CityApiFactory factory)
         Assert.Equal("application/json", response.Content.Headers.ContentType?.MediaType);
         Assert.NotNull(cityNames);
         Assert.Equal(
-            ["berlin", "london", "paris", "tokyo", "toronto"],
+            ["Berlin", "London", "Paris", "Tokyo", "Toronto"],
             cityNames);
     }
 
@@ -34,7 +34,7 @@ public sealed class CityEndpointsTests(CityApiFactory factory)
         Assert.Equal("application/json", response.Content.Headers.ContentType?.MediaType);
         Assert.NotNull(cityNames);
         Assert.Equal(
-            ["chicago", "houston", "los angeles", "new york", "philadelphia", "phoenix"],
+            ["Chicago", "Houston", "Los Angeles", "New York", "Philadelphia", "Phoenix"],
             cityNames);
     }
 }

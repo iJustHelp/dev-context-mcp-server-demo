@@ -8,8 +8,11 @@ results in SQLite.
 
 ## API Contract
 
-- `GET /city` returns the `ICityService` names as a JSON string array.
-- `GET /city/usa` returns the QA `IUsaCityService` names as a JSON string array.
+- `GET /city` returns the `ICityService` names as a display-cased JSON string
+  array: `Berlin`, `London`, `Paris`, `Tokyo`, and `Toronto`.
+- `GET /city/usa` returns the QA `IUsaCityService` names as a display-cased
+  JSON string array: `Chicago`, `Houston`, `Los Angeles`, `New York`,
+  `Philadelphia`, and `Phoenix`.
 - `GET /city/{cityName}/location` returns
   `{ "city", "latitude", "longitude" }`.
 - `GET /city/{cityName}/population` returns
@@ -34,7 +37,8 @@ results in SQLite.
 - Verify internal NuGet APIs with DevContext before implementation.
 - Normalize cache keys by trimming and converting city names to uppercase.
 - Cache successful exact geocoding matches indefinitely.
-- Preserve the package-provided order for both city-list endpoints.
+- Convert city-list values with `Demo.Cities.Extensions.ToCityName()` while
+  preserving the package-provided order.
 - Pass request cancellation tokens through asynchronous data access and
   Open-Meteo calls.
 - Tests use temporary SQLite databases and a fake Open-Meteo HTTP handler.

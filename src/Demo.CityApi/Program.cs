@@ -23,10 +23,16 @@ app.UseExceptionHandler();
 app.UseStatusCodePages();
 
 app.MapGet("/city", (ICityService cityService) =>
-    TypedResults.Ok(cityService.GetCityNames()));
+    TypedResults.Ok(
+        cityService.GetCityNames()
+            .Select(cityName => cityName.ToCityName())
+            .ToArray()));
 
 app.MapGet("/city/usa", (IUsaCityService cityService) =>
-    TypedResults.Ok(cityService.GetCityNames()));
+    TypedResults.Ok(
+        cityService.GetCityNames()
+            .Select(cityName => cityName.ToCityName())
+            .ToArray()));
 
 app.MapCityDetailEndpoints();
 
