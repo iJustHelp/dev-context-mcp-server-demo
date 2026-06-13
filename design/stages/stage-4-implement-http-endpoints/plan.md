@@ -11,18 +11,32 @@ required HTTP contracts.
 - Map the four `CityGeocodingOutcome` values documented in the Stage 3 plan
   to the HTTP contracts in `design/spec.md`.
 
+## Implementation Status
+
+**Complete.** All four Minimal API endpoints, stable response DTOs, outcome
+mapping, Problem Details responses with trace identifiers, endpoint metadata,
+and centralized sanitized exception handling are implemented.
+
+| Route | Success |
+| --- | --- |
+| `GET /city` | Exact `ICityService` list and order |
+| `GET /city/usa` | Exact `IUsaCityService` list and order |
+| `GET /city/{cityName}/location` | `CityLocationResponse` |
+| `GET /city/{cityName}/population` | `CityPopulationResponse` |
+
 ## Work
 
-- Map `GET /city` to `ICityService.GetCityNames()` without reordering.
-- Map `GET /city/usa` to `IUsaCityService.GetCityNames()` without reordering.
-- Map `GET /city/{cityName}/location` to the shared geocoding service.
-- Map `GET /city/{cityName}/population` to the same service.
-- Define separate location and population response DTOs.
-- Return typed JSON results for success.
-- Return Problem Details for `404`, `502`, and `500` responses with a trace ID
-  and no internal exception details.
-- Ensure the static `/usa` route cannot be captured as a city name.
-- Add endpoint names and OpenAPI response metadata.
+- [x] Map `GET /city` to `ICityService.GetCityNames()` without reordering.
+- [x] Map `GET /city/usa` to `IUsaCityService.GetCityNames()` without
+  reordering.
+- [x] Map `GET /city/{cityName}/location` to the shared geocoding service.
+- [x] Map `GET /city/{cityName}/population` to the same service.
+- [x] Define separate location and population response DTOs.
+- [x] Return typed JSON results for success.
+- [x] Return Problem Details for `404`, `502`, and `500` responses with a
+  trace ID and no internal exception details.
+- [x] Ensure the static `/usa` route cannot be captured as a city name.
+- [x] Add endpoint names and OpenAPI response metadata.
 
 ## Deliverables
 
@@ -32,9 +46,21 @@ required HTTP contracts.
 
 ## Exit Criteria
 
-- Every endpoint returns the status, content type, and JSON shape documented in
-  `design/spec.md`.
-- URL-encoded and mixed-case city names resolve correctly.
-- Missing population returns `404` while cached location remains available.
-- Upstream failure on a cache miss returns `502`.
-- Internal persistence failures return sanitized `500` Problem Details.
+- [x] Every endpoint returns the status, content type, and JSON shape
+  documented in `design/spec.md`.
+- [x] URL-encoded and mixed-case city names are passed correctly to the shared
+  geocoding service.
+- [x] Missing population returns `404` while the shared location record
+  remains valid.
+- [x] Upstream failure on a cache miss maps to `502`.
+- [x] Internal persistence failures return sanitized `500` Problem Details.
+
+## Verification
+
+- Restore: succeeded offline using the QA feed, production feed, and existing
+  global package cache.
+- Build: succeeded with zero warnings and zero errors.
+- Tests: 33 passed, 0 failed.
+- Endpoint tests use strict Moq collaborators and verify route values, call
+  counts, JSON contracts, content types, outcome mappings, trace identifiers,
+  and sanitized internal errors.

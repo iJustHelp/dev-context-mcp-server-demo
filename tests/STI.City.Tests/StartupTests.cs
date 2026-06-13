@@ -31,7 +31,7 @@ public sealed class StartupTests
             using var client = factory.CreateClient();
             using var response = await client.GetAsync("/city");
 
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         finally
         {

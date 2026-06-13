@@ -3,6 +3,8 @@ using Microsoft.Extensions.Options;
 using OpenMeteo.Api.Client;
 using Serilog;
 using STI.City.API.Configuration;
+using STI.City.API.Endpoints;
+using STI.City.API.ErrorHandling;
 using STI.City.Core;
 using STI.City.Data;
 using STI.City.Data.Geocoding;
@@ -10,6 +12,7 @@ using STI.City.Data.Geocoding;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<InternalServerErrorExceptionHandler>();
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 builder.Services
     .AddOptions<CityCacheOptions>()
@@ -35,15 +38,10 @@ await app.Services
     .GetRequiredService<ICityCacheSchemaInitializer>()
     .InitializeAsync();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler();
-}
-
+app.UseExceptionHandler();
 app.UseSerilogRequestLogging();
 
-app.MapGroup("/city")
-    .WithTags("City");
+app.MapCityEndpoints();
 
 app.Run();
 

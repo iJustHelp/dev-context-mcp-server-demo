@@ -7,7 +7,9 @@ failure mappings with deterministic automated tests.
 
 ## Dependencies
 
-- Stage 4 exit criteria must pass.
+- Stage 4 is complete.
+- Reuse the implemented route, DTO, Problem Details, and service outcome
+  contracts while adding real cache and upstream interaction coverage.
 
 ## Work
 
