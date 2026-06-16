@@ -3,6 +3,7 @@ using OpenMeteo.Api.Client;
 using Serilog;
 using STI.City.API.Configuration;
 using STI.City.API.Endpoints;
+using STI.City.Core.DependencyInjection;
 using STI.City.Data.DependencyInjection;
 using STI.City.Data.Schema;
 
@@ -13,9 +14,6 @@ builder.Host.UseSerilog((context, configuration) => configuration
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
-// Fail fast when the cache connection string is missing or blank.
-var cacheConnectionString = builder.Configuration.GetRequiredCacheConnectionString();
-
 builder.Services.AddProblemDetails();
 builder.Services.AddSingleton(TimeProvider.System);
 
@@ -23,22 +21,27 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddDemoCities();
 builder.Services.AddOpenMeteoApiClient();
 
-// Application data layer (SQLite cache repository).
+// Application services and the SQLite cache repository.
+builder.Services.AddCityCore();
 builder.Services.AddCityData();
 
 var app = builder.Build();
 
-// Initialize the SQLite schema before the application accepts requests.
+// Validate configuration (fail fast) and initialize the SQLite schema before
+// the application accepts requests. Reading the final configuration keeps the
+// schema and repository pointed at the same database under test overrides.
+var cacheConnectionString = app.Configuration.GetRequiredCacheConnectionString();
 await GeocodingCacheSchemaInitializer.InitializeAsync(cacheConnectionString);
 
+// Centralized, sanitized exception handling outside development.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler();
+    app.UseExceptionHandler(errorApp => errorApp.Run(context =>
+        CityEndpoints
+            .CityProblem(context, StatusCodes.Status500InternalServerError, "Internal server error")
+            .ExecuteAsync(context)));
 }
 
-app.UseStatusCodePages();
-
-// Map the /city route group. Endpoint handlers are added in later stages.
 app.MapCityEndpoints();
 
 app.Run();

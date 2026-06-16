@@ -28,9 +28,8 @@ public sealed class StartupTests
             using var client = factory.CreateClient();
             var response = await client.GetAsync("/city");
 
-            // The /city group exists but maps no endpoints yet, so a started host
-            // routes the request to a 404.
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            // A started host routes the request and returns the city list.
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
         finally
         {
