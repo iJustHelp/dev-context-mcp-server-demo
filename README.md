@@ -1,1 +1,82 @@
-# demo-dev-context-mcp-server
+# Demo applications for dev-context-mcp-server
+
+A demo that builds the same **City API** twice — once with **Claude** and once
+with **GitHub Copilot** — to show how a coding agent uses the [DevContext MCP
+server](https://github.com/iJustHelp/dev-context-mcp-server) to ground its work in indexed internal NuGet packages, public .NET
+symbols, and company documentation instead of guessing at unfamiliar APIs.
+
+Both agents work from the identical spec in [design/](design/) and the same
+DevContext server, so the two solutions are a side-by-side comparison of how
+each agent resolves package contracts and applies them.
+
+## What gets built
+
+A .NET 10 ASP.NET Core **Minimal API** named `City` that:
+
+- returns global and U.S. city lists from the internal `Demo.Cities` package;
+- retrieves city geocoding details through `OpenMeteo.Api.Client`;
+- caches Open-Meteo results in SQLite via `Formula.SimpleRepo` (cache-aside); and
+- reuses one cached record for both the location and population endpoints.
+
+### Endpoints
+
+| Method & route | Purpose |
+| --- | --- |
+| `GET /city` | All city names from `Demo.Cities.ICityService` |
+| `GET /city/usa` | U.S. city names from the QA-only `IUsaCityService` |
+| `GET /city/{cityName}/location` | Matched city's latitude and longitude |
+| `GET /city/{cityName}/population` | Matched city's population |
+
+City names are URL-decoded, trimmed, and matched case-insensitively. Responses
+follow documented status codes (`200`, `404` for missing data, `502` when
+Open-Meteo fails with no cache, `500` for internal errors) and use Problem
+Details JSON for errors.
+
+## Repository layout
+
+| Path | Contents |
+| --- | --- |
+| [design/](design/) | Business requirements ([brd.md](design/brd.md)), technical spec ([spec.md](design/spec.md)), and staged implementation plans ([stages.md](design/stages.md)) |
+| [claude/](claude/) | The City solution as implemented by Claude |
+| [copilot/](copilot/) | The City solution as implemented by GitHub Copilot |
+| [AGENTS.md](AGENTS.md) | Agent workflow rules for using DevContext and writing tests |
+
+Each solution follows the same four-project structure:
+
+| Project | Responsibility |
+| --- | --- |
+| `STI.City.API` | Minimal API endpoints, startup, DI, configuration, DTOs |
+| `STI.City.Core` | Domain models, service contracts and implementations, repository contracts |
+| `STI.City.Data` | SQLite entities, mappings, `Formula.SimpleRepo` repositories |
+| `STI.City.Tests` | Unit, API, and repository integration tests |
+
+## DevContext MCP server
+
+The [DevContext MCP
+server](https://github.com/iJustHelp/dev-context-mcp-server) is configured at `http://127.0.0.1:2222/mcp` in both
+[.mcp.json](.mcp.json) (Claude Code) and [.codex/config.toml](.codex/config.toml)
+(Codex). Agents query it to:
+
+1. `resolve_library` for a package, client, or implementation concept.
+2. `list_versions` and pick a compatible NuGet version.
+3. `query_docs` for examples, or `get_symbol` for a specific public type/member.
+4. Preserve citation URIs and surface any insufficient-evidence warnings.
+
+See [AGENTS.md](AGENTS.md) for the full workflow and unit-testing rules. If the
+DevContext server is unavailable, agents stop implementation work rather than
+invent APIs.
+
+## Building and testing
+
+Requires the **.NET 10 SDK**. From either solution folder:
+
+```bash
+# Claude implementation
+dotnet test claude/City.slnx
+
+# Copilot implementation
+dotnet test copilot/City.sln
+```
+
+Configure the SQLite cache through `ConnectionStrings:CityCache` (for example,
+`Data Source=city-cache.db`); startup fails if it is absent or blank.
