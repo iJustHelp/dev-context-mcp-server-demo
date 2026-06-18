@@ -40,10 +40,10 @@ public static class CityEndpoints
     }
 
     private static IResult GetAllCities(ICityService cityService) =>
-        Results.Ok(cityService.GetCityNames());
+        Results.Ok(cityService.GetCityNames().Select(name => name.ToCityName()).ToList());
 
     private static IResult GetUsaCities(IUsaCityService usaCityService) =>
-        Results.Ok(usaCityService.GetCityNames());
+        Results.Ok(usaCityService.GetCityNames().Select(name => name.ToCityName()).ToList());
 
     private static async Task<IResult> GetLocationAsync(
         string cityName,

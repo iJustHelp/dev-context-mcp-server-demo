@@ -461,6 +461,48 @@ public sealed class CityGeocodingServiceTests
         AssertNoOtherCalls();
     }
 
+    [Fact]
+    public async Task GetGeocodingAsync_LowercasePackageSpelling_UsesTitleCaseCanonicalName()
+    {
+        // Purpose: the lowercase package spelling is canonicalized via ToCityName for the query, key, and display.
+        // arrange
+        _cityService.Setup(c => c.GetCityNames()).Returns(new[] { "new york" });
+        _cacheRepository
+            .Setup(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()))
+            .ReturnsAsync((GeocodingCacheRecord?)null);
+        _openMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                "New York", It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(ResponseWith(Location("New York", population: 1)));
+        _timeProvider.Setup(t => t.GetUtcNow()).Returns(FixedNow);
+        _cacheRepository
+            .Setup(r => r.UpsertAsync(It.IsAny<GeocodingCacheRecord>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        // act
+        var actual = await _target.GetGeocodingAsync("new york", CancellationToken.None);
+
+        // assert
+        Assert.Equal(CityGeocodingStatus.Success, actual.Status);
+        Assert.Equal("New York", actual.Record!.DisplayName);
+        Assert.Equal("NEW YORK", actual.Record.NormalizedCityName);
+        _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
+        _openMeteoClient.Verify(
+            c => c.SearchLocationsAsync(
+                "New York", It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()),
+            Times.Once);
+        _timeProvider.Verify(t => t.GetUtcNow(), Times.Once);
+        _cacheRepository.Verify(
+            r => r.UpsertAsync(
+                It.Is<GeocodingCacheRecord>(x => x.DisplayName == "New York" && x.NormalizedCityName == "NEW YORK"),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
+        AssertNoOtherCalls();
+    }
+
     private void SetupCacheMissForNewYork()
     {
         _cityService.Setup(c => c.GetCityNames()).Returns(new[] { "New York" });

@@ -340,6 +340,52 @@ public sealed class CityApiTests
         Assert.Contains("\"longitude\"", body);
     }
 
+    [Fact]
+    public async Task GetCities_TitleCasesLowercasePackageNames_PreservingOrder()
+    {
+        using var factory = new CityApiFactory();
+        factory.CityService.Setup(c => c.GetCityNames()).Returns(new[] { "berlin", "london" });
+        var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/city");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var actual = await response.Content.ReadFromJsonAsync<string[]>();
+        Assert.Equal(new[] { "Berlin", "London" }, actual);
+    }
+
+    [Fact]
+    public async Task GetLocation_LowercasePackageSpelling_ReturnsTitleCaseCanonicalName()
+    {
+        using var factory = new CityApiFactory();
+        factory.CityService.Setup(c => c.GetCityNames()).Returns(new[] { "london" });
+        factory.OpenMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                "London", It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new GeocodingResponse
+            {
+                Results = new List<LocationResult>
+                {
+                    new()
+                    {
+                        Name = "London",
+                        Country = "United Kingdom",
+                        Latitude = 51.50853,
+                        Longitude = -0.12574,
+                        Population = 8_961_989,
+                    },
+                },
+            });
+        var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/city/london/location");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var actual = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
+        Assert.Equal("London", actual!.CityName);
+    }
+
     private static void SetupCities(CityApiFactory factory)
     {
         factory.CityService.Setup(c => c.GetCityNames()).Returns(GlobalCities);

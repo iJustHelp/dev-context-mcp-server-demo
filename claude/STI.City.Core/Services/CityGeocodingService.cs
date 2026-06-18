@@ -45,13 +45,16 @@ public sealed class CityGeocodingService : ICityGeocodingService
             return CityGeocodingResult.CityNotFound;
         }
 
-        var canonicalName = _cityService.GetCityNames()
+        var packageName = _cityService.GetCityNames()
             .FirstOrDefault(name => string.Equals(name, trimmed, StringComparison.OrdinalIgnoreCase));
-        if (canonicalName is null)
+        if (packageName is null)
         {
             return CityGeocodingResult.CityNotFound;
         }
 
+        // Canonical display spelling comes from the package's ToCityName helper
+        // (title case, e.g. "new york" -> "New York").
+        var canonicalName = packageName.ToCityName();
         var normalizedKey = canonicalName.Trim().ToUpperInvariant();
 
         var cached = await _cacheRepository.GetAsync(normalizedKey, cancellationToken)
