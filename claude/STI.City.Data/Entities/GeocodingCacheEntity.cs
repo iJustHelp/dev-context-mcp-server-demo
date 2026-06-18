@@ -1,17 +1,13 @@
 using Dapper;
-using Formula.SimpleRepo;
-using Microsoft.Data.Sqlite;
 
 namespace STI.City.Data.Entities;
 
 /// <summary>
-/// Formula.SimpleRepo persistence model mapped to the <c>GeocodingCache</c>
-/// SQLite table. The <see cref="ConnectionDetails"/> attribute binds the model
-/// to the <c>CityCache</c> connection string and the SQLite dialect.
+/// SQLite persistence shape for the <c>GeocodingCache</c> table.
+/// <see cref="RetrievedAtUtc"/> is stored as a UTC ISO-8601 string.
 /// </summary>
-[ConnectionDetails("CityCache", typeof(SqliteConnection), Dapper.SimpleCRUD.Dialect.SQLite)]
 [Table("GeocodingCache")]
-public class GeocodingCacheEntity
+public sealed class GeocodingCacheEntity
 {
     [Key]
     public string NormalizedCityName { get; set; } = string.Empty;
@@ -27,4 +23,13 @@ public class GeocodingCacheEntity
     public long? Population { get; set; }
 
     public string RetrievedAtUtc { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// Constraints model required by <c>Formula.SimpleRepo.RepositoryBase</c>.
+/// The repository performs its reads and the atomic upsert through Dapper, so
+/// no scoped constraints are declared.
+/// </summary>
+public sealed class GeocodingCacheConstraints
+{
 }

@@ -2,16 +2,19 @@ using STI.City.Core.Models;
 
 namespace STI.City.Core.Services;
 
-/// <summary>Outcome of a city geocoding lookup, mapped to HTTP results by the API.</summary>
+/// <summary>
+/// Explicit outcome of a geocoding lookup. The transport layer maps each
+/// status to the documented HTTP contract.
+/// </summary>
 public enum CityGeocodingStatus
 {
-    /// <summary><see cref="CityGeocodingResult.Record"/> holds the shared location and population data.</summary>
+    /// <summary><see cref="CityGeocodingResult.Record"/> carries the shared data.</summary>
     Success,
 
-    /// <summary>The trimmed city name is empty or not present in the supported city list.</summary>
+    /// <summary>The trimmed route value is empty or not in <c>ICityService</c>.</summary>
     CityNotFound,
 
-    /// <summary>Open-Meteo returned no result whose name exactly matches the canonical city.</summary>
+    /// <summary>Open-Meteo returned no exact city-name match.</summary>
     GeocodingNotFound,
 
     /// <summary>Open-Meteo failed or timed out on a cache miss.</summary>
@@ -19,22 +22,11 @@ public enum CityGeocodingStatus
 }
 
 /// <summary>
-/// Explicit result of <see cref="ICityGeocodingService"/>. Persistence failures
-/// and request cancellation propagate as exceptions rather than outcomes.
+/// Result of <see cref="ICityGeocodingService.GetGeocodingAsync"/>. A
+/// successful result always carries a non-null <see cref="Record"/>.
 /// </summary>
-public sealed record CityGeocodingResult
+public sealed record CityGeocodingResult(CityGeocodingStatus Status, GeocodingCacheRecord? Record)
 {
-    private CityGeocodingResult(CityGeocodingStatus status, GeocodingCacheRecord? record)
-    {
-        Status = status;
-        Record = record;
-    }
-
-    public CityGeocodingStatus Status { get; }
-
-    /// <summary>The cached/retrieved record; non-null only when <see cref="Status"/> is <see cref="CityGeocodingStatus.Success"/>.</summary>
-    public GeocodingCacheRecord? Record { get; }
-
     public static CityGeocodingResult Success(GeocodingCacheRecord record) =>
         new(CityGeocodingStatus.Success, record);
 

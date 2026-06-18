@@ -7,12 +7,14 @@ using STI.City.Core.Repositories;
 namespace STI.City.Core.Services;
 
 /// <summary>
-/// Cache-aside geocoding workflow: resolve the city against the supported list,
-/// return a cached record when present, otherwise query Open-Meteo, select the
-/// exact-name match, persist it, and return it.
+/// Validates the requested city, performs the shared cache-aside lookup, and
+/// deterministically selects the upstream Open-Meteo result.
 /// </summary>
 public sealed class CityGeocodingService : ICityGeocodingService
 {
+    private const int GeocodingResultCount = 10;
+    private const string GeocodingLanguage = "en";
+
     private readonly ICityService _cityService;
     private readonly IOpenMeteoClient _openMeteoClient;
     private readonly IGeocodingCacheRepository _cacheRepository;
@@ -33,28 +35,27 @@ public sealed class CityGeocodingService : ICityGeocodingService
         _logger = logger;
     }
 
-    public async Task<CityGeocodingResult> GetCityGeocodingAsync(
+    public async Task<CityGeocodingResult> GetGeocodingAsync(
         string cityName,
         CancellationToken cancellationToken = default)
     {
-        var trimmed = cityName?.Trim() ?? string.Empty;
+        var trimmed = (cityName ?? string.Empty).Trim();
         if (trimmed.Length == 0)
         {
             return CityGeocodingResult.CityNotFound;
         }
 
-        // Resolve to the canonical, package-provided spelling (case-insensitive).
-        var canonicalCityName = _cityService.GetCityNames()
+        var canonicalName = _cityService.GetCityNames()
             .FirstOrDefault(name => string.Equals(name, trimmed, StringComparison.OrdinalIgnoreCase));
-        if (canonicalCityName is null)
+        if (canonicalName is null)
         {
             return CityGeocodingResult.CityNotFound;
         }
 
-        var normalizedCityName = canonicalCityName.Trim().ToUpperInvariant();
+        var normalizedKey = canonicalName.Trim().ToUpperInvariant();
 
-        // Cache hit takes precedence over the upstream service.
-        var cached = await _cacheRepository.GetAsync(normalizedCityName, cancellationToken);
+        var cached = await _cacheRepository.GetAsync(normalizedKey, cancellationToken)
+            .ConfigureAwait(false);
         if (cached is not null)
         {
             return CityGeocodingResult.Success(cached);
@@ -63,57 +64,57 @@ public sealed class CityGeocodingService : ICityGeocodingService
         GeocodingResponse response;
         try
         {
-            response = await _openMeteoClient.SearchLocationsAsync(
-                canonicalCityName,
-                count: null,
-                language: "en",
-                format: null,
-                cancellationToken);
+            response = await _openMeteoClient
+                .SearchLocationsAsync(canonicalName, GeocodingResultCount, GeocodingLanguage, Format.Json, cancellationToken)
+                .ConfigureAwait(false);
         }
-        catch (ApiException exception)
+        catch (ApiException ex)
         {
-            _logger.LogWarning(
-                exception,
-                "Open-Meteo returned an error for {City} during geocoding.",
-                canonicalCityName);
+            _logger.LogWarning(ex,
+                "Open-Meteo returned an unsuccessful response for {City} during {Operation}.",
+                canonicalName, nameof(GetGeocodingAsync));
             return CityGeocodingResult.ServiceUnavailable;
         }
-        catch (HttpRequestException exception)
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
-            _logger.LogWarning(
-                exception,
-                "Open-Meteo transport failure for {City} during geocoding.",
-                canonicalCityName);
+            // Client disconnect: propagate cancellation, do not map to 502.
+            throw;
+        }
+        catch (OperationCanceledException ex)
+        {
+            _logger.LogWarning(ex,
+                "Open-Meteo timed out for {City} during {Operation}.",
+                canonicalName, nameof(GetGeocodingAsync));
             return CityGeocodingResult.ServiceUnavailable;
         }
-        catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+        catch (HttpRequestException ex)
         {
-            // A timeout (not client disconnection) is an upstream failure.
-            _logger.LogWarning("Open-Meteo timed out for {City} during geocoding.", canonicalCityName);
+            _logger.LogWarning(ex,
+                "Open-Meteo transport failure for {City} during {Operation}.",
+                canonicalName, nameof(GetGeocodingAsync));
             return CityGeocodingResult.ServiceUnavailable;
         }
 
-        // Deterministic selection: first upstream result with an exact name match.
         var match = response.Results?
             .FirstOrDefault(result =>
-                string.Equals(result.Name, canonicalCityName, StringComparison.OrdinalIgnoreCase));
+                string.Equals(result.Name, canonicalName, StringComparison.OrdinalIgnoreCase));
         if (match is null)
         {
             return CityGeocodingResult.GeocodingNotFound;
         }
 
-        var record = new GeocodingCacheRecord
-        {
-            NormalizedCityName = normalizedCityName,
-            DisplayName = canonicalCityName,
-            Country = match.Country,
-            Latitude = match.Latitude,
-            Longitude = match.Longitude,
-            Population = match.Population,
-            RetrievedAtUtc = _timeProvider.GetUtcNow(),
-        };
+        var record = new GeocodingCacheRecord(
+            NormalizedCityName: normalizedKey,
+            DisplayName: canonicalName,
+            Country: match.Country,
+            Latitude: match.Latitude,
+            Longitude: match.Longitude,
+            Population: match.Population,
+            RetrievedAtUtc: _timeProvider.GetUtcNow());
 
-        await _cacheRepository.UpsertAsync(record, cancellationToken);
+        // Persistence failures propagate so the pipeline can return 500.
+        await _cacheRepository.UpsertAsync(record, cancellationToken).ConfigureAwait(false);
+
         return CityGeocodingResult.Success(record);
     }
 }

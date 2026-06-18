@@ -10,33 +10,64 @@ using STI.City.Data.Entities;
 namespace STI.City.Data.Repositories;
 
 /// <summary>
-/// SQLite-backed cache repository built on Formula.SimpleRepo. Reads use the
-/// verified SimpleRepo key lookup; the atomic insert/upsert runs as a single
-/// SQLite <c>ON CONFLICT</c> statement through Dapper.
+/// SQLite-backed cache repository built on <c>Formula.SimpleRepo</c>. Reads and
+/// the atomic insert/upsert run through Dapper against the SimpleRepo-resolved
+/// connection so concurrent misses converge on a single row.
 /// </summary>
 [Repo]
-public class SimpleRepoGeocodingCacheRepository
-    : RepositoryBase<GeocodingCacheEntity, GeocodingCacheEntity>, IGeocodingCacheRepository
+[ConnectionDetails(
+    GeocodingCacheSchemaInitializerConnection,
+    typeof(SqliteConnection),
+    Dapper.SimpleCRUD.Dialect.SQLite)]
+public sealed class SimpleRepoGeocodingCacheRepository
+    : RepositoryBase<GeocodingCacheEntity, GeocodingCacheConstraints>, IGeocodingCacheRepository
 {
+    private const string GeocodingCacheSchemaInitializerConnection = "CityCache";
+
+    private const string SelectSql = """
+        SELECT NormalizedCityName, DisplayName, Country, Latitude, Longitude, Population, RetrievedAtUtc
+        FROM GeocodingCache
+        WHERE NormalizedCityName = @NormalizedCityName;
+        """;
+
+    private const string UpsertSql = """
+        INSERT INTO GeocodingCache
+            (NormalizedCityName, DisplayName, Country, Latitude, Longitude, Population, RetrievedAtUtc)
+        VALUES
+            (@NormalizedCityName, @DisplayName, @Country, @Latitude, @Longitude, @Population, @RetrievedAtUtc)
+        ON CONFLICT(NormalizedCityName) DO UPDATE SET
+            DisplayName    = excluded.DisplayName,
+            Country        = excluded.Country,
+            Latitude       = excluded.Latitude,
+            Longitude      = excluded.Longitude,
+            Population     = excluded.Population,
+            RetrievedAtUtc = excluded.RetrievedAtUtc;
+        """;
+
     private readonly string _connectionString;
 
     public SimpleRepoGeocodingCacheRepository(IConfiguration configuration)
         : base(configuration)
     {
-        _connectionString = configuration.GetConnectionString("CityCache")
+        _connectionString = configuration.GetConnectionString(GeocodingCacheSchemaInitializerConnection)
             ?? throw new InvalidOperationException(
-                "Configuration value 'ConnectionStrings:CityCache' is required and must not be blank.");
+                $"ConnectionStrings:{GeocodingCacheSchemaInitializerConnection} is not configured.");
     }
 
     public async Task<GeocodingCacheRecord?> GetAsync(
         string normalizedCityName,
         CancellationToken cancellationToken = default)
     {
-        cancellationToken.ThrowIfCancellationRequested();
+        await using var connection = new SqliteConnection(_connectionString);
+        var command = new CommandDefinition(
+            SelectSql,
+            new { NormalizedCityName = normalizedCityName },
+            cancellationToken: cancellationToken);
 
-        // Cast to object so SimpleRepo binds the primary-key lookup overload
-        // rather than the JSON-constraint string overload.
-        GeocodingCacheEntity? entity = await GetAsync((object)normalizedCityName);
+        var entity = await connection
+            .QuerySingleOrDefaultAsync<GeocodingCacheEntity>(command)
+            .ConfigureAwait(false);
+
         return entity is null ? null : ToRecord(entity);
     }
 
@@ -44,54 +75,34 @@ public class SimpleRepoGeocodingCacheRepository
         GeocodingCacheRecord record,
         CancellationToken cancellationToken = default)
     {
-        const string sql = """
-            INSERT INTO GeocodingCache
-                (NormalizedCityName, DisplayName, Country, Latitude, Longitude, Population, RetrievedAtUtc)
-            VALUES
-                (@NormalizedCityName, @DisplayName, @Country, @Latitude, @Longitude, @Population, @RetrievedAtUtc)
-            ON CONFLICT(NormalizedCityName) DO UPDATE SET
-                DisplayName    = excluded.DisplayName,
-                Country        = excluded.Country,
-                Latitude       = excluded.Latitude,
-                Longitude      = excluded.Longitude,
-                Population     = excluded.Population,
-                RetrievedAtUtc = excluded.RetrievedAtUtc;
-            """;
-
-        var parameters = new
-        {
-            record.NormalizedCityName,
-            record.DisplayName,
-            record.Country,
-            record.Latitude,
-            record.Longitude,
-            record.Population,
-            RetrievedAtUtc = ToStorage(record.RetrievedAtUtc),
-        };
-
         await using var connection = new SqliteConnection(_connectionString);
-        await connection.OpenAsync(cancellationToken);
-        await connection.ExecuteAsync(
-            new CommandDefinition(sql, parameters, cancellationToken: cancellationToken));
+        var command = new CommandDefinition(
+            UpsertSql,
+            new
+            {
+                record.NormalizedCityName,
+                record.DisplayName,
+                record.Country,
+                record.Latitude,
+                record.Longitude,
+                record.Population,
+                RetrievedAtUtc = record.RetrievedAtUtc.UtcDateTime
+                    .ToString("O", CultureInfo.InvariantCulture),
+            },
+            cancellationToken: cancellationToken);
+
+        await connection.ExecuteAsync(command).ConfigureAwait(false);
     }
 
-    private static GeocodingCacheRecord ToRecord(GeocodingCacheEntity entity) => new()
-    {
-        NormalizedCityName = entity.NormalizedCityName,
-        DisplayName = entity.DisplayName,
-        Country = entity.Country,
-        Latitude = entity.Latitude,
-        Longitude = entity.Longitude,
-        Population = entity.Population,
-        RetrievedAtUtc = FromStorage(entity.RetrievedAtUtc),
-    };
-
-    private static string ToStorage(DateTimeOffset value) =>
-        value.ToUniversalTime().ToString("O", CultureInfo.InvariantCulture);
-
-    private static DateTimeOffset FromStorage(string value) =>
-        DateTimeOffset.Parse(
-            value,
+    private static GeocodingCacheRecord ToRecord(GeocodingCacheEntity entity) => new(
+        NormalizedCityName: entity.NormalizedCityName,
+        DisplayName: entity.DisplayName,
+        Country: entity.Country,
+        Latitude: entity.Latitude,
+        Longitude: entity.Longitude,
+        Population: entity.Population,
+        RetrievedAtUtc: DateTimeOffset.Parse(
+            entity.RetrievedAtUtc,
             CultureInfo.InvariantCulture,
-            DateTimeStyles.RoundtripKind | DateTimeStyles.AssumeUniversal);
+            DateTimeStyles.RoundtripKind | DateTimeStyles.AssumeUniversal));
 }

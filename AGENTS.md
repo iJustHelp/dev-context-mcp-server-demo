@@ -27,10 +27,6 @@ Do not invent APIs when DevContext returns `not_found`,
 `insufficient_evidence`, or `not_ready`. Inspect the local repository for
 additional evidence and clearly state any remaining uncertainty.
 
-The server is configured as `devcontext` in `.codex/config.toml` at
-`http://127.0.0.1:2222/mcp`. If its tools are unavailable, verify the local
-server is running and start a new Codex session after it becomes available.
-
 ## Unit Tests
 
 For classes that use dependency injection:

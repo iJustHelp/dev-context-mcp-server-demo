@@ -1,25 +1,25 @@
+using Microsoft.Extensions.Configuration;
+
 namespace STI.City.API.Configuration;
 
 /// <summary>
-/// Validates the SQLite cache configuration so startup fails fast when it is
-/// missing or blank.
+/// Validates the required SQLite cache connection string at startup.
 /// </summary>
 public static class CacheConfiguration
 {
-    /// <summary>Name of the cache connection string under <c>ConnectionStrings</c>.</summary>
-    public const string CacheConnectionStringName = "CityCache";
+    public const string ConnectionStringName = "CityCache";
 
     /// <summary>
     /// Returns the configured cache connection string, throwing when it is
-    /// absent or blank.
+    /// absent or blank so the application fails fast.
     /// </summary>
-    public static string GetRequiredCacheConnectionString(this IConfiguration configuration)
+    public static string GetRequiredConnectionString(IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString(CacheConnectionStringName);
+        var connectionString = configuration.GetConnectionString(ConnectionStringName);
         if (string.IsNullOrWhiteSpace(connectionString))
         {
             throw new InvalidOperationException(
-                $"Configuration value 'ConnectionStrings:{CacheConnectionStringName}' is required and must not be blank.");
+                $"ConnectionStrings:{ConnectionStringName} must be configured and non-blank.");
         }
 
         return connectionString;

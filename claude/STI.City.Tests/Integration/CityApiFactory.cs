@@ -6,80 +6,56 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Moq;
 using OpenMeteo.Api.Client;
-using STI.City.Core.Models;
-using STI.City.Data.Repositories;
 
 namespace STI.City.Tests.Integration;
 
 /// <summary>
-/// Integration test host with deterministic package doubles, an isolated SQLite
-/// database per instance, and the production exception handler enabled.
+/// Hosts the API through <see cref="WebApplicationFactory{TEntryPoint}"/> with
+/// deterministic package test doubles and an isolated SQLite database per
+/// factory instance.
 /// </summary>
 public sealed class CityApiFactory : WebApplicationFactory<Program>
 {
-    private readonly string _dbPath =
-        Path.Combine(Path.GetTempPath(), $"city-it-{Guid.NewGuid():N}.db");
+    public Mock<ICityService> CityService { get; } = new();
 
-    public Mock<ICityService> CityService { get; } = new(MockBehavior.Strict);
+    public Mock<IUsaCityService> UsaCityService { get; } = new();
 
-    public Mock<IUsaCityService> UsaCityService { get; } = new(MockBehavior.Strict);
+    public Mock<IOpenMeteoClient> OpenMeteoClient { get; } = new();
 
-    public Mock<IOpenMeteoClient> OpenMeteo { get; } = new(MockBehavior.Strict);
+    /// <summary>Optional extra service overrides applied last (e.g. a failing repository).</summary>
+    public Action<IServiceCollection>? ConfigureExtraServices { get; set; }
 
-    /// <summary>Optional extra service overrides applied during host build (e.g. a failing repository).</summary>
-    public Action<IServiceCollection>? OverrideServices { get; set; }
+    public string DatabasePath { get; } =
+        Path.Combine(Path.GetTempPath(), $"city-cache-api-{Guid.NewGuid():N}.db");
 
-    public string ConnectionString => $"Data Source={_dbPath};Pooling=False";
+    public string ConnectionString => $"Data Source={DatabasePath}";
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Production");
+        builder.UseEnvironment("Testing");
 
         builder.ConfigureAppConfiguration((_, configuration) =>
-        {
             configuration.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["ConnectionStrings:CityCache"] = ConnectionString,
-            });
-        });
+            }));
 
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<ICityService>();
-            services.AddSingleton(CityService.Object);
-
             services.RemoveAll<IUsaCityService>();
-            services.AddSingleton(UsaCityService.Object);
-
             services.RemoveAll<IOpenMeteoClient>();
-            services.AddSingleton(OpenMeteo.Object);
 
-            OverrideServices?.Invoke(services);
+            services.AddSingleton(CityService.Object);
+            services.AddSingleton(UsaCityService.Object);
+            services.AddSingleton(OpenMeteoClient.Object);
+
+            ConfigureExtraServices?.Invoke(services);
         });
     }
-
-    /// <summary>Inserts a row directly into the isolated cache database using the real repository.</summary>
-    public Task SeedAsync(GeocodingCacheRecord record) =>
-        new SimpleRepoGeocodingCacheRepository(BuildConfiguration()).UpsertAsync(record);
-
-    public async Task<long> CountCacheRowsAsync()
-    {
-        await using var connection = new SqliteConnection(ConnectionString);
-        await connection.OpenAsync();
-        await using var command = connection.CreateCommand();
-        command.CommandText = "SELECT COUNT(*) FROM GeocodingCache;";
-        return (long)(await command.ExecuteScalarAsync())!;
-    }
-
-    private IConfiguration BuildConfiguration() =>
-        new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                ["ConnectionStrings:CityCache"] = ConnectionString,
-            })
-            .Build();
 
     protected override void Dispose(bool disposing)
     {
@@ -90,16 +66,19 @@ public sealed class CityApiFactory : WebApplicationFactory<Program>
         }
 
         SqliteConnection.ClearAllPools();
-        try
+        foreach (var path in new[] { DatabasePath, DatabasePath + "-wal", DatabasePath + "-shm" })
         {
-            if (File.Exists(_dbPath))
+            try
             {
-                File.Delete(_dbPath);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
             }
-        }
-        catch (IOException)
-        {
-            // Best-effort cleanup of an isolated temp database.
+            catch (IOException)
+            {
+                // Best-effort cleanup of the isolated test database.
+            }
         }
     }
 }

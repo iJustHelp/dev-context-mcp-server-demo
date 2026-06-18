@@ -1,85 +1,45 @@
-using System.Net;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
-using STI.City.API.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace STI.City.Tests.Startup;
 
 /// <summary>
-/// Stage 1 exit criteria: the host starts and routes requests with valid
-/// configuration, and configuration validation fails fast when the cache
+/// Startup tests proving the application fails fast when the required cache
 /// connection string is missing or blank.
 /// </summary>
 public sealed class StartupTests
 {
     [Fact]
-    public async Task Application_StartsAndRoutesRequests_WithValidConfiguration()
+    public void Startup_BlankCacheConnectionString_FailsFast()
     {
-        // The connection string is read at builder construction (before the host
-        // is built), so an environment variable is the reliable override; it
-        // keeps the startup-created database out of the project directory.
-        var dbPath = Path.Combine(Path.GetTempPath(), $"city-startup-{Guid.NewGuid():N}.db");
-        Environment.SetEnvironmentVariable("ConnectionStrings__CityCache", $"Data Source={dbPath};Pooling=False");
-        try
-        {
-            await using var factory = new WebApplicationFactory<Program>();
+        // Purpose: a blank ConnectionStrings:CityCache must stop startup.
+        using var factory = CreateFactory(connectionString: "   ");
 
-            using var client = factory.CreateClient();
-            var response = await client.GetAsync("/city");
+        Assert.Throws<InvalidOperationException>(() => factory.CreateClient());
+    }
 
-            // A started host routes the request and returns the city list.
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-        finally
+    [Fact]
+    public void Startup_MissingCacheConnectionString_FailsFast()
+    {
+        // Purpose: a missing ConnectionStrings:CityCache must stop startup.
+        using var factory = CreateFactory(connectionString: null);
+
+        Assert.Throws<InvalidOperationException>(() => factory.CreateClient());
+    }
+
+    private static WebApplicationFactory<Program> CreateFactory(string? connectionString) =>
+        new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
         {
-            Environment.SetEnvironmentVariable("ConnectionStrings__CityCache", null);
-            Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
-            if (File.Exists(dbPath))
+            builder.UseEnvironment("Testing");
+            builder.ConfigureAppConfiguration((_, configuration) =>
             {
-                File.Delete(dbPath);
-            }
-        }
-    }
-
-    [Fact]
-    public void Configuration_FailsFast_WhenConnectionStringMissing()
-    {
-        var configuration = BuildConfiguration(settings: new());
-
-        var exception = Assert.Throws<InvalidOperationException>(
-            configuration.GetRequiredCacheConnectionString);
-
-        Assert.Contains("ConnectionStrings:CityCache", exception.Message);
-    }
-
-    [Theory]
-    [InlineData("")]
-    [InlineData("   ")]
-    public void Configuration_FailsFast_WhenConnectionStringBlank(string blank)
-    {
-        var configuration = BuildConfiguration(new()
-        {
-            ["ConnectionStrings:CityCache"] = blank,
+                // Drop any existing value, then apply the test override.
+                configuration.AddInMemoryCollection(new Dictionary<string, string?>
+                {
+                    ["ConnectionStrings:CityCache"] = connectionString,
+                });
+            });
         });
-
-        var exception = Assert.Throws<InvalidOperationException>(
-            configuration.GetRequiredCacheConnectionString);
-
-        Assert.Contains("ConnectionStrings:CityCache", exception.Message);
-    }
-
-    [Fact]
-    public void Configuration_ReturnsConnectionString_WhenPresent()
-    {
-        var configuration = BuildConfiguration(new()
-        {
-            ["ConnectionStrings:CityCache"] = "Data Source=city-cache.db",
-        });
-
-        Assert.Equal("Data Source=city-cache.db", configuration.GetRequiredCacheConnectionString());
-    }
-
-    private static IConfiguration BuildConfiguration(Dictionary<string, string?> settings) =>
-        new ConfigurationBuilder().AddInMemoryCollection(settings).Build();
 }

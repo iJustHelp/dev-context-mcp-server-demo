@@ -3,48 +3,50 @@ using OpenMeteo.Api.Client;
 using Serilog;
 using STI.City.API.Configuration;
 using STI.City.API.Endpoints;
+using STI.City.API.Infrastructure;
 using STI.City.Core.DependencyInjection;
 using STI.City.Data.DependencyInjection;
 using STI.City.Data.Schema;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, configuration) => configuration
-    .ReadFrom.Configuration(context.Configuration)
+builder.Host.UseSerilog((context, loggerConfiguration) => loggerConfiguration
+    .MinimumLevel.Information()
     .Enrich.FromLogContext()
     .WriteTo.Console());
 
-builder.Services.AddProblemDetails();
-builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddProblemDetails(options =>
+    options.CustomizeProblemDetails = context =>
+        context.ProblemDetails.Extensions["traceId"] =
+            System.Diagnostics.Activity.Current?.Id ?? context.HttpContext.TraceIdentifier);
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-// Verified package dependency-injection extensions.
+// Package services through their verified DI extensions.
 builder.Services.AddDemoCities();
 builder.Services.AddOpenMeteoApiClient();
 
-// Application services and the SQLite cache repository.
+// Application service, repository, TimeProvider, and schema initializer.
 builder.Services.AddCityCore();
 builder.Services.AddCityData();
 
 var app = builder.Build();
 
-// Validate configuration (fail fast) and initialize the SQLite schema before
-// the application accepts requests. Reading the final configuration keeps the
-// schema and repository pointed at the same database under test overrides.
-var cacheConnectionString = app.Configuration.GetRequiredCacheConnectionString();
-await GeocodingCacheSchemaInitializer.InitializeAsync(cacheConnectionString);
+// Fail fast when the cache connection string is missing or blank. Validated
+// against the built configuration so test/host overrides are honored.
+CacheConfiguration.GetRequiredConnectionString(app.Configuration);
 
-// Centralized, sanitized exception handling outside development.
-if (!app.Environment.IsDevelopment())
+// Initialize the SQLite schema before accepting requests.
+using (var scope = app.Services.CreateScope())
 {
-    app.UseExceptionHandler(errorApp => errorApp.Run(context =>
-        CityEndpoints
-            .CityProblem(context, StatusCodes.Status500InternalServerError, "Internal server error")
-            .ExecuteAsync(context)));
+    var schemaInitializer = scope.ServiceProvider.GetRequiredService<GeocodingCacheSchemaInitializer>();
+    await schemaInitializer.InitializeAsync();
 }
+
+app.UseExceptionHandler();
 
 app.MapCityEndpoints();
 
 app.Run();
 
-/// <summary>Exposes the entry point to the integration test project.</summary>
+/// <summary>Exposed so the integration test project can host the API.</summary>
 public partial class Program;

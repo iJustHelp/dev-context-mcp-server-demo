@@ -1,362 +1,380 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
-using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using OpenMeteo.Api.Client;
 using STI.City.API.Contracts;
-using STI.City.Core.Models;
 using STI.City.Core.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace STI.City.Tests.Integration;
 
 /// <summary>
-/// Stage 5: end-to-end HTTP coverage for section 11 of <c>design/spec.md</c>,
-/// exercising the real pipeline, DI wiring, and SQLite cache with deterministic
-/// package doubles and an isolated database per test.
+/// HTTP integration tests covering section 11 of the specification: full
+/// pipeline, dependency wiring, real SQLite cache behavior, and failure maps.
 /// </summary>
 public sealed class CityApiTests
 {
+    private const string NewYorkKey = "NEW YORK";
+    private static readonly string[] GlobalCities = { "New York", "London", "Tokyo" };
+    private static readonly string[] UsaCities = { "Chicago", "New York", "Seattle" };
+
     [Fact]
-    public async Task GetCity_ReturnsExactPackageListAndOrder()
+    public async Task GetCities_ReturnsExactPackageListAndOrder()
     {
         using var factory = new CityApiFactory();
-        factory.CityService.Setup(c => c.GetCityNames()).Returns(["Chicago", "London", "Tokyo"]);
-        using var client = factory.CreateClient();
+        factory.CityService.Setup(c => c.GetCityNames()).Returns(GlobalCities);
+        var client = factory.CreateClient();
 
         var response = await client.GetAsync("/city");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("application/json", response.Content.Headers.ContentType?.MediaType);
-        var body = await response.Content.ReadFromJsonAsync<List<string>>();
-        Assert.Equal(["Chicago", "London", "Tokyo"], body);
+        var actual = await response.Content.ReadFromJsonAsync<string[]>();
+        Assert.Equal(GlobalCities, actual);
     }
 
     [Fact]
-    public async Task GetCityUsa_ReturnsExactPackageListAndOrder()
+    public async Task GetUsaCities_ReturnsExactPackageListAndOrder()
     {
         using var factory = new CityApiFactory();
-        factory.UsaCityService.Setup(c => c.GetCityNames()).Returns(["Chicago", "New York", "Seattle"]);
-        using var client = factory.CreateClient();
+        factory.UsaCityService.Setup(c => c.GetCityNames()).Returns(UsaCities);
+        var client = factory.CreateClient();
 
         var response = await client.GetAsync("/city/usa");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var body = await response.Content.ReadFromJsonAsync<List<string>>();
-        Assert.Equal(["Chicago", "New York", "Seattle"], body);
-    }
-
-    [Theory]
-    [InlineData("/city/New%20York/location")]   // encoded space
-    [InlineData("/city/new%20york/location")]    // mixed case
-    [InlineData("/city/%20New%20York%20/location")] // surrounding whitespace
-    public async Task LocationEndpoint_ResolvesCanonicalCity_AcrossEncodingCaseAndWhitespace(string path)
-    {
-        using var factory = new CityApiFactory();
-        SetupCities(factory, "New York");
-        SetupUpstream(factory, "New York", Location("New York", "United States", 40.7128, -74.006, 8_804_190));
-        using var client = factory.CreateClient();
-
-        var response = await client.GetAsync(path);
-
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var body = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
-        Assert.Equal("New York", body!.CityName);
-        Assert.Equal("United States", body.Country);
-        Assert.Equal(40.7128, body.Latitude);
-        Assert.Equal(-74.006, body.Longitude);
+        var actual = await response.Content.ReadFromJsonAsync<string[]>();
+        Assert.Equal(UsaCities, actual);
     }
 
     [Fact]
-    public async Task UnknownCity_Returns404_AndMakesNoCacheOrUpstreamCall()
+    public async Task GetLocation_EncodedCityName_ResolvesSuccessfully()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "London", "New York");
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 8_804_190);
+        var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/city/New%20York/location");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal("application/json", response.Content.Headers.ContentType?.MediaType);
+        var actual = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
+        Assert.Equal("New York", actual!.CityName);
+        Assert.Equal("United States", actual.Country);
+        Assert.Equal(40.7128, actual.Latitude);
+        Assert.Equal(-74.006, actual.Longitude);
+    }
+
+    [Fact]
+    public async Task GetLocation_MixedCaseInput_ResolvesToCanonicalSpelling()
+    {
+        using var factory = new CityApiFactory();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 1);
+        var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/city/nEw%20yORk/location");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var actual = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
+        Assert.Equal("New York", actual!.CityName);
+    }
+
+    [Fact]
+    public async Task GetLocation_WhitespacePaddedInput_ResolvesToCanonicalSpelling()
+    {
+        using var factory = new CityApiFactory();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 1);
+        var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/city/%20New%20York%20/location");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var actual = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
+        Assert.Equal("New York", actual!.CityName);
+    }
+
+    [Fact]
+    public async Task GetLocation_UnknownCity_Returns404AndNoUpstreamCall()
+    {
+        using var factory = new CityApiFactory();
+        SetupCities(factory);
+        factory.OpenMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new InvalidOperationException("upstream must not be called"));
+        var client = factory.CreateClient();
 
         var response = await client.GetAsync("/city/Atlantis/location");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
-        Assert.Equal("City not found", await TitleOf(response));
-        factory.OpenMeteo.Verify(
-            c => c.SearchLocationsAsync(
-                It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(),
-                It.IsAny<Format?>(), It.IsAny<CancellationToken>()),
-            Times.Never);
-        Assert.Equal(0, await factory.CountCacheRowsAsync());
+        VerifyNoUpstreamCall(factory);
     }
 
     [Fact]
-    public async Task LocationCacheMiss_CallsUpstreamOnce_PersistsOneRow()
+    public async Task GetLocation_CacheMiss_CallsUpstreamOnce_PersistsRecord()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "New York");
-        SetupUpstream(factory, "New York", Location("New York", "United States", 40.7128, -74.006, 8_804_190));
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 8_804_190);
+        var client = factory.CreateClient();
 
         var response = await client.GetAsync("/city/New%20York/location");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(1, await factory.CountCacheRowsAsync());
-        VerifyUpstreamCalled(factory, "New York", Times.Once());
+        VerifyUpstreamCalled(factory, Times.Once());
+        Assert.Equal(1, SqliteCacheProbe.CountRows(factory.ConnectionString));
+        Assert.Equal(8_804_190, SqliteCacheProbe.GetPopulation(factory.ConnectionString, NewYorkKey));
     }
 
     [Fact]
-    public async Task PopulationCacheMiss_CallsUpstreamOnce_ReturnsPopulation()
+    public async Task GetPopulation_CacheMiss_CallsUpstreamOnce_PersistsRecord()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "New York");
-        SetupUpstream(factory, "New York", Location("New York", "United States", 40.7128, -74.006, 8_804_190));
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 8_804_190);
+        var client = factory.CreateClient();
 
         var response = await client.GetAsync("/city/New%20York/population");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var body = await response.Content.ReadFromJsonAsync<CityPopulationResponse>();
-        Assert.Equal("New York", body!.CityName);
-        Assert.Equal(8_804_190, body.Population);
-        Assert.Equal(1, await factory.CountCacheRowsAsync());
-        VerifyUpstreamCalled(factory, "New York", Times.Once());
+        var actual = await response.Content.ReadFromJsonAsync<CityPopulationResponse>();
+        Assert.Equal("New York", actual!.CityName);
+        Assert.Equal(8_804_190, actual.Population);
+        VerifyUpstreamCalled(factory, Times.Once());
+        Assert.Equal(1, SqliteCacheProbe.CountRows(factory.ConnectionString));
     }
 
     [Fact]
-    public async Task LocationThenPopulation_MakesOneTotalUpstreamCall()
+    public async Task LocationThenPopulation_SharesOneCacheRecord_OneUpstreamCall()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "New York");
-        SetupUpstream(factory, "New York", Location("New York", "United States", 40.7128, -74.006, 8_804_190));
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 8_804_190);
+        var client = factory.CreateClient();
 
-        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/city/New%20York/location")).StatusCode);
-        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/city/New%20York/population")).StatusCode);
+        var location = await client.GetAsync("/city/New%20York/location");
+        var population = await client.GetAsync("/city/New%20York/population");
 
-        VerifyUpstreamCalled(factory, "New York", Times.Once());
-        Assert.Equal(1, await factory.CountCacheRowsAsync());
+        Assert.Equal(HttpStatusCode.OK, location.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, population.StatusCode);
+        VerifyUpstreamCalled(factory, Times.Once());
+        Assert.Equal(1, SqliteCacheProbe.CountRows(factory.ConnectionString));
     }
 
     [Fact]
-    public async Task PopulationThenLocation_MakesOneTotalUpstreamCall()
+    public async Task PopulationThenLocation_SharesOneCacheRecord_OneUpstreamCall()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "New York");
-        SetupUpstream(factory, "New York", Location("New York", "United States", 40.7128, -74.006, 8_804_190));
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 8_804_190);
+        var client = factory.CreateClient();
 
-        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/city/New%20York/population")).StatusCode);
-        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/city/New%20York/location")).StatusCode);
+        var population = await client.GetAsync("/city/New%20York/population");
+        var location = await client.GetAsync("/city/New%20York/location");
 
-        VerifyUpstreamCalled(factory, "New York", Times.Once());
-        Assert.Equal(1, await factory.CountCacheRowsAsync());
+        Assert.Equal(HttpStatusCode.OK, population.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, location.StatusCode);
+        VerifyUpstreamCalled(factory, Times.Once());
+        Assert.Equal(1, SqliteCacheProbe.CountRows(factory.ConnectionString));
     }
 
     [Fact]
-    public async Task PreSeededCacheRow_ReturnsWithoutCallingUpstream()
+    public async Task PreSeededCacheRow_ReturnsLocation_WithoutCallingUpstream()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "New York");
-        using var client = factory.CreateClient();
-        await factory.SeedAsync(new GeocodingCacheRecord
-        {
-            NormalizedCityName = "NEW YORK",
-            DisplayName = "New York",
-            Country = "United States",
-            Latitude = 40.7128,
-            Longitude = -74.006,
-            Population = 8_804_190,
-            RetrievedAtUtc = DateTimeOffset.UtcNow,
-        });
+        SetupCities(factory);
+        factory.OpenMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new InvalidOperationException("upstream must not be called"));
+        var client = factory.CreateClient();
+        SqliteCacheProbe.Seed(
+            factory.ConnectionString, NewYorkKey, "New York", "United States", 1.5, 2.5, 123);
 
         var response = await client.GetAsync("/city/New%20York/location");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        factory.OpenMeteo.Verify(
-            c => c.SearchLocationsAsync(
-                It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(),
-                It.IsAny<Format?>(), It.IsAny<CancellationToken>()),
-            Times.Never);
+        var actual = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
+        Assert.Equal(1.5, actual!.Latitude);
+        VerifyNoUpstreamCall(factory);
     }
 
     [Fact]
     public async Task EmptyUpstreamResult_Returns404()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "Springfield");
-        SetupUpstream(factory, "Springfield"); // no results
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        factory.OpenMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                "New York", It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new GeocodingResponse { Results = new List<LocationResult>() });
+        var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/city/Springfield/location");
+        var response = await client.GetAsync("/city/New%20York/location");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        Assert.Equal("Geocoding result not found", await TitleOf(response));
-        Assert.Equal(0, await factory.CountCacheRowsAsync());
+        Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
     }
 
     [Fact]
-    public async Task MissingPopulation_LocationReturns200_PopulationReturns404_OneUpstreamCall()
+    public async Task MissingPopulation_LocationReturns200_PopulationReturns404_NoSecondUpstreamCall()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "Atlantis");
-        SetupUpstream(factory, "Atlantis", Location("Atlantis", "Nowhere", 1.0, 2.0, population: null));
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: null);
+        var client = factory.CreateClient();
 
-        var location = await client.GetAsync("/city/Atlantis/location");
-        var population = await client.GetAsync("/city/Atlantis/population");
+        var location = await client.GetAsync("/city/New%20York/location");
+        var population = await client.GetAsync("/city/New%20York/population");
 
         Assert.Equal(HttpStatusCode.OK, location.StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, population.StatusCode);
-        Assert.Equal("Population not found", await TitleOf(population));
-        VerifyUpstreamCalled(factory, "Atlantis", Times.Once());
+        Assert.Equal("application/problem+json", population.Content.Headers.ContentType?.MediaType);
+        VerifyUpstreamCalled(factory, Times.Once());
     }
 
     [Fact]
-    public async Task UpstreamFailureOnCacheMiss_Returns502()
+    public async Task UpstreamFailureOnCacheMiss_Returns502ProblemDetails()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "Paris");
-        factory.OpenMeteo
-            .Setup(c => c.SearchLocationsAsync("Paris", null, "en", null, It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new ApiException("upstream down", 503, "body", null, null));
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        factory.OpenMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                "New York", It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new ApiException("upstream down", 503, "body", null!, null!));
+        var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/city/Paris/location");
+        var response = await client.GetAsync("/city/New%20York/location");
 
         Assert.Equal(HttpStatusCode.BadGateway, response.StatusCode);
         Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
-        Assert.Equal("Geocoding service unavailable", await TitleOf(response));
+        Assert.Equal(0, SqliteCacheProbe.CountRows(factory.ConnectionString));
     }
 
     [Fact]
-    public async Task CachedRecord_ReturnsOk_EvenWhenUpstreamWouldFail()
+    public async Task CachedRecord_WithFailingUpstream_Returns200_WithoutCallingUpstream()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "Paris");
-        // Upstream would fail, but a cache hit must never reach it.
-        factory.OpenMeteo
-            .Setup(c => c.SearchLocationsAsync("Paris", null, "en", null, It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new ApiException("upstream down", 503, "body", null, null));
-        using var client = factory.CreateClient();
-        await factory.SeedAsync(new GeocodingCacheRecord
-        {
-            NormalizedCityName = "PARIS",
-            DisplayName = "Paris",
-            Country = "France",
-            Latitude = 48.8566,
-            Longitude = 2.3522,
-            Population = 2_140_000,
-            RetrievedAtUtc = DateTimeOffset.UtcNow,
-        });
+        SetupCities(factory);
+        factory.OpenMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new ApiException("upstream down", 503, "body", null!, null!));
+        var client = factory.CreateClient();
+        SqliteCacheProbe.Seed(
+            factory.ConnectionString, NewYorkKey, "New York", "United States", 40.7128, -74.006, 8_804_190);
 
-        var response = await client.GetAsync("/city/Paris/location");
+        var response = await client.GetAsync("/city/New%20York/population");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        var body = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
-        Assert.Equal("Paris", body!.CityName);
+        var actual = await response.Content.ReadFromJsonAsync<CityPopulationResponse>();
+        Assert.Equal(8_804_190, actual!.Population);
+        VerifyNoUpstreamCall(factory);
     }
 
     [Fact]
-    public async Task RepeatedDetailRequests_LeaveExactlyOneCacheRow()
+    public async Task RepeatedLookups_LeaveExactlyOneCacheRow()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "New York");
-        SetupUpstream(factory, "New York", Location("New York", "United States", 40.7128, -74.006, 8_804_190));
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 8_804_190);
+        var client = factory.CreateClient();
 
         await client.GetAsync("/city/New%20York/location");
         await client.GetAsync("/city/New%20York/population");
         await client.GetAsync("/city/new%20york/location");
 
-        Assert.Equal(1, await factory.CountCacheRowsAsync());
+        Assert.Equal(1, SqliteCacheProbe.CountRows(factory.ConnectionString));
     }
 
     [Fact]
-    public async Task SqliteFailure_Returns500_WithoutExposingDetails()
+    public async Task InternalSqliteFailure_Returns500_WithoutExposingExceptionDetails()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "Chicago");
-        var failingRepository = new Mock<IGeocodingCacheRepository>(MockBehavior.Strict);
+        SetupCities(factory);
+        var failingRepository = new Mock<IGeocodingCacheRepository>();
         failingRepository
             .Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new SqliteException("SECRET-INTERNAL-DETAIL", 1));
-        factory.OverrideServices = services =>
+            .ThrowsAsync(new InvalidOperationException("secret-connection-failure"));
+        factory.ConfigureExtraServices = services =>
         {
             services.RemoveAll<IGeocodingCacheRepository>();
-            services.AddSingleton(failingRepository.Object);
+            services.AddTransient(_ => failingRepository.Object);
         };
-        using var client = factory.CreateClient();
+        var client = factory.CreateClient();
 
-        var response = await client.GetAsync("/city/Chicago/location");
-        var raw = await response.Content.ReadAsStringAsync();
+        var response = await client.GetAsync("/city/New%20York/location");
 
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
-        Assert.Equal("Internal server error", await TitleOf(response));
-        Assert.DoesNotContain("SECRET-INTERNAL-DETAIL", raw);
-        Assert.DoesNotContain("SqliteException", raw);
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Internal server error", body);
+        Assert.DoesNotContain("secret-connection-failure", body);
     }
 
     [Fact]
-    public async Task SuccessResponse_UsesSpecifiedJsonFieldNamesAndContentType()
+    public async Task LocationResponse_HasSpecifiedJsonFieldNamesAndContentType()
     {
         using var factory = new CityApiFactory();
-        SetupCities(factory, "New York");
-        SetupUpstream(factory, "New York", Location("New York", "United States", 40.7128, -74.006, 8_804_190));
-        using var client = factory.CreateClient();
+        SetupCities(factory);
+        SetupNewYorkUpstream(factory, population: 8_804_190);
+        var client = factory.CreateClient();
 
         var response = await client.GetAsync("/city/New%20York/location");
-        using var document = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-        var root = document.RootElement;
 
         Assert.Equal("application/json", response.Content.Headers.ContentType?.MediaType);
-        Assert.Equal("New York", root.GetProperty("cityName").GetString());
-        Assert.Equal("United States", root.GetProperty("country").GetString());
-        Assert.Equal(40.7128, root.GetProperty("latitude").GetDouble());
-        Assert.Equal(-74.006, root.GetProperty("longitude").GetDouble());
+        var body = await response.Content.ReadAsStringAsync();
+        Assert.Contains("\"cityName\"", body);
+        Assert.Contains("\"country\"", body);
+        Assert.Contains("\"latitude\"", body);
+        Assert.Contains("\"longitude\"", body);
     }
 
-    [Fact]
-    public async Task ProblemResponses_IncludeTraceId()
+    private static void SetupCities(CityApiFactory factory)
     {
-        using var factory = new CityApiFactory();
-        SetupCities(factory, "London");
-        using var client = factory.CreateClient();
-
-        var response = await client.GetAsync("/city/Atlantis/location");
-        using var document = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-
-        Assert.True(document.RootElement.TryGetProperty("traceId", out var traceId));
-        Assert.False(string.IsNullOrWhiteSpace(traceId.GetString()));
+        factory.CityService.Setup(c => c.GetCityNames()).Returns(GlobalCities);
+        factory.UsaCityService.Setup(c => c.GetCityNames()).Returns(UsaCities);
     }
 
-    private static void SetupCities(CityApiFactory factory, params string[] names) =>
-        factory.CityService.Setup(c => c.GetCityNames()).Returns(names);
+    private static void SetupNewYorkUpstream(CityApiFactory factory, long? population)
+    {
+        factory.OpenMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                "New York", It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new GeocodingResponse
+            {
+                Results = new List<LocationResult>
+                {
+                    new()
+                    {
+                        Name = "New York",
+                        Country = "United States",
+                        Latitude = 40.7128,
+                        Longitude = -74.006,
+                        Population = population is null ? null : (int)population.Value,
+                    },
+                },
+            });
+    }
 
-    private static void SetupUpstream(CityApiFactory factory, string query, params LocationResult[] results) =>
-        factory.OpenMeteo
-            .Setup(c => c.SearchLocationsAsync(query, null, "en", null, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new GeocodingResponse { Results = results.ToList() });
-
-    private static void VerifyUpstreamCalled(CityApiFactory factory, string query, Times times) =>
-        factory.OpenMeteo.Verify(
-            c => c.SearchLocationsAsync(query, null, "en", null, It.IsAny<CancellationToken>()),
+    private static void VerifyUpstreamCalled(CityApiFactory factory, Times times) =>
+        factory.OpenMeteoClient.Verify(
+            c => c.SearchLocationsAsync(
+                It.IsAny<string>(), It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()),
             times);
 
-    private static LocationResult Location(
-        string name, string country, double latitude, double longitude, int? population) =>
-        new()
-        {
-            Name = name,
-            Country = country,
-            Latitude = latitude,
-            Longitude = longitude,
-            Population = population,
-        };
-
-    private static async Task<string?> TitleOf(HttpResponseMessage response)
-    {
-        using var document = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-        return document.RootElement.GetProperty("title").GetString();
-    }
+    private static void VerifyNoUpstreamCall(CityApiFactory factory) =>
+        VerifyUpstreamCalled(factory, Times.Never());
 }

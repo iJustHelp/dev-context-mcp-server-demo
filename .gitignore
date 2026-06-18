@@ -2,3 +2,5 @@
 **/obj/
 .vs/
 TestResults/
+**/city-cache.db
+**/city-cache.db-*

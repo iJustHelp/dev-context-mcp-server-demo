@@ -1,12 +1,12 @@
 namespace STI.City.Core.Services;
 
 /// <summary>
-/// Resolves a supported city and supplies one cached geocoding record that
-/// serves both the location and population endpoints.
+/// Exposes the single cached geocoding lookup used by both the location and
+/// population endpoints.
 /// </summary>
 public interface ICityGeocodingService
 {
-    Task<CityGeocodingResult> GetCityGeocodingAsync(
+    Task<CityGeocodingResult> GetGeocodingAsync(
         string cityName,
         CancellationToken cancellationToken = default);
 }

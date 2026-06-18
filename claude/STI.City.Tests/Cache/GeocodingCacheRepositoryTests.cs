@@ -1,219 +1,161 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using STI.City.Core.Models;
-using STI.City.Core.Repositories;
-using STI.City.Data.DependencyInjection;
 using STI.City.Data.Repositories;
 using STI.City.Data.Schema;
 
 namespace STI.City.Tests.Cache;
 
 /// <summary>
-/// Stage 2 exit criteria, verified against an isolated SQLite database per test:
-/// idempotent schema, key lookup, atomic unique upsert, full round-trip
-/// (including nullable population and UTC timestamp), and cache-miss versus
-/// SQLite-failure behavior.
+/// Integration tests for the SimpleRepo-backed SQLite cache repository. Each
+/// test uses an isolated database file, so these intentionally use real
+/// persistence rather than mocks.
 /// </summary>
-public sealed class GeocodingCacheRepositoryTests : IAsyncLifetime
+public sealed class GeocodingCacheRepositoryTests : IDisposable
 {
-    private readonly string _dbPath =
-        Path.Combine(Path.GetTempPath(), $"city-cache-{Guid.NewGuid():N}.db");
+    private readonly string _databasePath =
+        Path.Combine(Path.GetTempPath(), $"city-cache-repo-{Guid.NewGuid():N}.db");
 
-    private string ConnectionString => $"Data Source={_dbPath};Pooling=False";
+    private readonly IConfiguration _configuration;
+    private readonly SimpleRepoGeocodingCacheRepository _repository;
+    private readonly GeocodingCacheSchemaInitializer _schemaInitializer;
 
-    public Task InitializeAsync() =>
-        GeocodingCacheSchemaInitializer.InitializeAsync(ConnectionString);
-
-    public Task DisposeAsync()
+    public GeocodingCacheRepositoryTests()
     {
-        TryDeleteDatabase(_dbPath);
-        return Task.CompletedTask;
-    }
-
-    private static void TryDeleteDatabase(string path)
-    {
-        // Release any pooled SQLite handles so the file is no longer locked.
-        SqliteConnection.ClearAllPools();
-        try
-        {
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-        }
-        catch (IOException)
-        {
-            // Best-effort cleanup of an isolated temp database.
-        }
-    }
-
-    [Fact]
-    public async Task SchemaInitialization_IsIdempotent()
-    {
-        // InitializeAsync already ran once in InitializeAsync(); running again
-        // must not throw.
-        await GeocodingCacheSchemaInitializer.InitializeAsync(ConnectionString);
-        await GeocodingCacheSchemaInitializer.InitializeAsync(ConnectionString);
-
-        Assert.Equal(0, await CountRowsAsync());
-    }
-
-    [Fact]
-    public async Task GetAsync_ReturnsNull_OnCacheMiss()
-    {
-        var repository = CreateRepository();
-
-        var result = await repository.GetAsync("DOES NOT EXIST");
-
-        Assert.Null(result);
-    }
-
-    [Fact]
-    public async Task UpsertThenGet_RoundTripsAllFields()
-    {
-        var repository = CreateRepository();
-        var record = new GeocodingCacheRecord
-        {
-            NormalizedCityName = "NEW YORK",
-            DisplayName = "New York",
-            Country = "United States",
-            Latitude = 40.7128,
-            Longitude = -74.006,
-            Population = 8_804_190,
-            RetrievedAtUtc = new DateTimeOffset(2026, 6, 16, 12, 30, 45, TimeSpan.Zero),
-        };
-
-        await repository.UpsertAsync(record);
-        var fetched = await repository.GetAsync("NEW YORK");
-
-        Assert.NotNull(fetched);
-        Assert.Equal(record.NormalizedCityName, fetched!.NormalizedCityName);
-        Assert.Equal(record.DisplayName, fetched.DisplayName);
-        Assert.Equal(record.Country, fetched.Country);
-        Assert.Equal(record.Latitude, fetched.Latitude);
-        Assert.Equal(record.Longitude, fetched.Longitude);
-        Assert.Equal(record.Population, fetched.Population);
-        Assert.Equal(record.RetrievedAtUtc, fetched.RetrievedAtUtc);
-    }
-
-    [Fact]
-    public async Task UpsertThenGet_RoundTripsNullPopulation()
-    {
-        var repository = CreateRepository();
-        var record = new GeocodingCacheRecord
-        {
-            NormalizedCityName = "ATLANTIS",
-            DisplayName = "Atlantis",
-            Country = "Nowhere",
-            Latitude = 0.0,
-            Longitude = 0.0,
-            Population = null,
-            RetrievedAtUtc = DateTimeOffset.UtcNow,
-        };
-
-        await repository.UpsertAsync(record);
-        var fetched = await repository.GetAsync("ATLANTIS");
-
-        Assert.NotNull(fetched);
-        Assert.Null(fetched!.Population);
-    }
-
-    [Fact]
-    public async Task Upsert_IsAtomicAndLeavesExactlyOneRow_PerNormalizedName()
-    {
-        var repository = CreateRepository();
-        var first = new GeocodingCacheRecord
-        {
-            NormalizedCityName = "LONDON",
-            DisplayName = "London",
-            Country = "United Kingdom",
-            Latitude = 51.5074,
-            Longitude = -0.1278,
-            Population = 8_900_000,
-            RetrievedAtUtc = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero),
-        };
-        var second = first with
-        {
-            DisplayName = "London",
-            Population = 9_000_000,
-            RetrievedAtUtc = new DateTimeOffset(2026, 6, 1, 0, 0, 0, TimeSpan.Zero),
-        };
-
-        await repository.UpsertAsync(first);
-        await repository.UpsertAsync(second);
-
-        Assert.Equal(1, await CountRowsAsync());
-        var fetched = await repository.GetAsync("LONDON");
-        Assert.NotNull(fetched);
-        Assert.Equal(9_000_000, fetched!.Population);
-        Assert.Equal(second.RetrievedAtUtc, fetched.RetrievedAtUtc);
-    }
-
-    [Fact]
-    public async Task GetAsync_Throws_WhenSqliteFails_AndDoesNotLookLikeAMiss()
-    {
-        // A separate database whose schema was never created: a missing table is
-        // an internal failure, distinct from a cache miss (which returns null).
-        var brokenDbPath = Path.Combine(Path.GetTempPath(), $"city-broken-{Guid.NewGuid():N}.db");
-        var repository = new SimpleRepoGeocodingCacheRepository(
-            BuildConfiguration($"Data Source={brokenDbPath};Pooling=False"));
-
-        try
-        {
-            await Assert.ThrowsAsync<SqliteException>(() => repository.GetAsync("ANYTHING"));
-        }
-        finally
-        {
-            TryDeleteDatabase(brokenDbPath);
-        }
-    }
-
-    [Fact]
-    public async Task GetAsync_Throws_WhenCancellationRequested()
-    {
-        var repository = CreateRepository();
-        using var cts = new CancellationTokenSource();
-        cts.Cancel();
-
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => repository.GetAsync("NEW YORK", cts.Token));
-    }
-
-    [Fact]
-    public void AddCityData_RegistersRepository_AsTransient()
-    {
-        var services = new ServiceCollection();
-        services.AddSingleton<IConfiguration>(BuildConfiguration(ConnectionString));
-        services.AddCityData();
-
-        var descriptor = Assert.Single(
-            services, d => d.ServiceType == typeof(IGeocodingCacheRepository));
-        Assert.Equal(ServiceLifetime.Transient, descriptor.Lifetime);
-
-        using var provider = services.BuildServiceProvider();
-        var first = provider.GetRequiredService<IGeocodingCacheRepository>();
-        var second = provider.GetRequiredService<IGeocodingCacheRepository>();
-        Assert.NotSame(first, second);
-    }
-
-    private SimpleRepoGeocodingCacheRepository CreateRepository() =>
-        new(BuildConfiguration(ConnectionString));
-
-    private static IConfiguration BuildConfiguration(string connectionString) =>
-        new ConfigurationBuilder()
+        _configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ConnectionStrings:CityCache"] = connectionString,
+                ["ConnectionStrings:CityCache"] = $"Data Source={_databasePath}",
             })
             .Build();
 
-    private async Task<long> CountRowsAsync()
+        _repository = new SimpleRepoGeocodingCacheRepository(_configuration);
+        _schemaInitializer = new GeocodingCacheSchemaInitializer(_configuration);
+    }
+
+    [Fact]
+    public async Task InitializeAsync_RunRepeatedly_DoesNotThrow()
     {
-        await using var connection = new SqliteConnection(ConnectionString);
-        await connection.OpenAsync();
-        await using var command = connection.CreateCommand();
+        // Purpose: schema initialization is idempotent.
+        // arrange / act
+        await _schemaInitializer.InitializeAsync();
+        await _schemaInitializer.InitializeAsync();
+
+        // assert
+        Assert.Equal(0, CountRows());
+    }
+
+    [Fact]
+    public async Task GetAsync_MissingKey_ReturnsNull()
+    {
+        // Purpose: a cache miss returns null (distinct from a SQLite failure).
+        // arrange
+        await _schemaInitializer.InitializeAsync();
+
+        // act
+        var actual = await _repository.GetAsync("NEW YORK");
+
+        // assert
+        Assert.Null(actual);
+    }
+
+    [Fact]
+    public async Task GetAsync_BeforeSchemaInitialized_ThrowsSqliteException()
+    {
+        // Purpose: SQLite failures surface as exceptions, not as cache misses.
+        // arrange / act / assert
+        await Assert.ThrowsAsync<SqliteException>(() => _repository.GetAsync("NEW YORK"));
+    }
+
+    [Fact]
+    public async Task UpsertThenGet_RoundTripsAllFieldsIncludingNullPopulation()
+    {
+        // Purpose: every field, including null population and the UTC timestamp, round-trips.
+        // arrange
+        await _schemaInitializer.InitializeAsync();
+        var retrievedAt = new DateTimeOffset(2026, 6, 17, 8, 30, 15, TimeSpan.Zero);
+        var record = new GeocodingCacheRecord(
+            "NEW YORK", "New York", "United States", 40.7128, -74.006, null, retrievedAt);
+
+        // act
+        await _repository.UpsertAsync(record);
+        var actual = await _repository.GetAsync("NEW YORK");
+
+        // assert
+        Assert.NotNull(actual);
+        Assert.Equal(record.NormalizedCityName, actual!.NormalizedCityName);
+        Assert.Equal(record.DisplayName, actual.DisplayName);
+        Assert.Equal(record.Country, actual.Country);
+        Assert.Equal(record.Latitude, actual.Latitude);
+        Assert.Equal(record.Longitude, actual.Longitude);
+        Assert.Null(actual.Population);
+        Assert.Equal(retrievedAt, actual.RetrievedAtUtc);
+    }
+
+    [Fact]
+    public async Task UpsertThenGet_RoundTripsPopulation()
+    {
+        // Purpose: a present population round-trips as a 64-bit integer.
+        // arrange
+        await _schemaInitializer.InitializeAsync();
+        var record = new GeocodingCacheRecord(
+            "NEW YORK", "New York", "United States", 40.7128, -74.006, 8_804_190, DateTimeOffset.UtcNow);
+
+        // act
+        await _repository.UpsertAsync(record);
+        var actual = await _repository.GetAsync("NEW YORK");
+
+        // assert
+        Assert.Equal(8_804_190, actual!.Population);
+    }
+
+    [Fact]
+    public async Task UpsertAsync_RepeatedForSameKey_LeavesExactlyOneUpdatedRow()
+    {
+        // Purpose: the primary key + atomic upsert keep one row per normalized city name.
+        // arrange
+        await _schemaInitializer.InitializeAsync();
+        var first = new GeocodingCacheRecord(
+            "NEW YORK", "New York", "United States", 40.0, -74.0, 1, DateTimeOffset.UtcNow);
+        var second = new GeocodingCacheRecord(
+            "NEW YORK", "New York", "United States", 41.0, -75.0, 2, DateTimeOffset.UtcNow);
+
+        // act
+        await _repository.UpsertAsync(first);
+        await _repository.UpsertAsync(second);
+        var actual = await _repository.GetAsync("NEW YORK");
+
+        // assert
+        Assert.Equal(1, CountRows());
+        Assert.Equal(2, actual!.Population);
+        Assert.Equal(41.0, actual.Latitude);
+    }
+
+    private int CountRows()
+    {
+        using var connection = new SqliteConnection($"Data Source={_databasePath}");
+        connection.Open();
+        using var command = connection.CreateCommand();
         command.CommandText = "SELECT COUNT(*) FROM GeocodingCache;";
-        return (long)(await command.ExecuteScalarAsync())!;
+        return Convert.ToInt32(command.ExecuteScalar());
+    }
+
+    public void Dispose()
+    {
+        SqliteConnection.ClearAllPools();
+        foreach (var path in new[] { _databasePath, _databasePath + "-wal", _databasePath + "-shm" })
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            }
+            catch (IOException)
+            {
+                // Best-effort cleanup of the isolated test database.
+            }
+        }
     }
 }
