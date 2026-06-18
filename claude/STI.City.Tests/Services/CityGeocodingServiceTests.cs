@@ -20,6 +20,7 @@ public sealed class CityGeocodingServiceTests
         new(2026, 6, 17, 12, 0, 0, TimeSpan.Zero);
 
     private readonly Mock<ICityService> _cityService = new(MockBehavior.Strict);
+    private readonly Mock<IUsaCityService> _usaCityService = new(MockBehavior.Strict);
     private readonly Mock<IOpenMeteoClient> _openMeteoClient = new(MockBehavior.Strict);
     private readonly Mock<IGeocodingCacheRepository> _cacheRepository = new(MockBehavior.Strict);
     private readonly Mock<TimeProvider> _timeProvider = new(MockBehavior.Strict);
@@ -29,8 +30,13 @@ public sealed class CityGeocodingServiceTests
 
     public CityGeocodingServiceTests()
     {
+        // The U.S. list is merged into the search; default to empty so individual
+        // tests only override it when exercising a U.S.-only city.
+        _usaCityService.Setup(c => c.GetCityNames()).Returns(Array.Empty<string>());
+
         _target = new CityGeocodingService(
             _cityService.Object,
+            _usaCityService.Object,
             _openMeteoClient.Object,
             _cacheRepository.Object,
             _timeProvider.Object,
@@ -65,6 +71,7 @@ public sealed class CityGeocodingServiceTests
         // assert
         Assert.Equal(CityGeocodingStatus.CityNotFound, actual.Status);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(
             r => r.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         _openMeteoClient.Verify(
@@ -93,6 +100,7 @@ public sealed class CityGeocodingServiceTests
         Assert.Equal(CityGeocodingStatus.Success, actual.Status);
         Assert.Same(cached, actual.Record);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -129,6 +137,7 @@ public sealed class CityGeocodingServiceTests
         Assert.Equal("New York", actual.Record!.DisplayName);
         Assert.Equal("NEW YORK", actual.Record.NormalizedCityName);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -173,6 +182,7 @@ public sealed class CityGeocodingServiceTests
         Assert.Equal(CityGeocodingStatus.Success, actual.Status);
         Assert.Equal(11, actual.Record!.Population);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -208,6 +218,7 @@ public sealed class CityGeocodingServiceTests
         _cacheRepository.Verify(
             r => r.UpsertAsync(It.IsAny<GeocodingCacheRecord>(), It.IsAny<CancellationToken>()), Times.Never);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -240,6 +251,7 @@ public sealed class CityGeocodingServiceTests
         _cacheRepository.Verify(
             r => r.UpsertAsync(It.IsAny<GeocodingCacheRecord>(), It.IsAny<CancellationToken>()), Times.Never);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -276,6 +288,7 @@ public sealed class CityGeocodingServiceTests
         Assert.Null(actual.Record!.Population);
         Assert.Equal(FixedNow, actual.Record.RetrievedAtUtc);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -315,6 +328,7 @@ public sealed class CityGeocodingServiceTests
         // assert
         Assert.Equal(CityGeocodingStatus.Success, actual.Status);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", token), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync("New York", It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<Format?>(), token),
@@ -416,6 +430,7 @@ public sealed class CityGeocodingServiceTests
         _cacheRepository.Verify(
             r => r.UpsertAsync(It.IsAny<GeocodingCacheRecord>(), It.IsAny<CancellationToken>()), Times.Never);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", token), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync("New York", It.IsAny<int?>(), It.IsAny<string>(), It.IsAny<Format?>(), token),
@@ -449,6 +464,7 @@ public sealed class CityGeocodingServiceTests
         // assert
         Assert.Equal("sqlite failure", actual.Message);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -488,6 +504,7 @@ public sealed class CityGeocodingServiceTests
         Assert.Equal("New York", actual.Record!.DisplayName);
         Assert.Equal("NEW YORK", actual.Record.NormalizedCityName);
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -503,6 +520,47 @@ public sealed class CityGeocodingServiceTests
         AssertNoOtherCalls();
     }
 
+    [Fact]
+    public async Task GetGeocodingAsync_CityOnlyInUsaList_ResolvesViaMergedSearch()
+    {
+        // Purpose: a city present only in the U.S. list resolves through the merged search.
+        // arrange
+        _cityService.Setup(c => c.GetCityNames()).Returns(new[] { "London" });
+        _usaCityService.Setup(c => c.GetCityNames()).Returns(new[] { "New York" });
+        _cacheRepository
+            .Setup(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()))
+            .ReturnsAsync((GeocodingCacheRecord?)null);
+        _openMeteoClient
+            .Setup(c => c.SearchLocationsAsync(
+                "New York", It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(ResponseWith(Location("New York", population: 1)));
+        _timeProvider.Setup(t => t.GetUtcNow()).Returns(FixedNow);
+        _cacheRepository
+            .Setup(r => r.UpsertAsync(It.IsAny<GeocodingCacheRecord>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        // act
+        var actual = await _target.GetGeocodingAsync("New York", CancellationToken.None);
+
+        // assert
+        Assert.Equal(CityGeocodingStatus.Success, actual.Status);
+        Assert.Equal("New York", actual.Record!.DisplayName);
+        Assert.Equal("NEW YORK", actual.Record.NormalizedCityName);
+        _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
+        _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
+        _openMeteoClient.Verify(
+            c => c.SearchLocationsAsync(
+                "New York", It.IsAny<int?>(), It.IsAny<string>(),
+                It.IsAny<Format?>(), It.IsAny<CancellationToken>()),
+            Times.Once);
+        _timeProvider.Verify(t => t.GetUtcNow(), Times.Once);
+        _cacheRepository.Verify(
+            r => r.UpsertAsync(It.IsAny<GeocodingCacheRecord>(), It.IsAny<CancellationToken>()), Times.Once);
+        AssertNoOtherCalls();
+    }
+
     private void SetupCacheMissForNewYork()
     {
         _cityService.Setup(c => c.GetCityNames()).Returns(new[] { "New York" });
@@ -514,6 +572,7 @@ public sealed class CityGeocodingServiceTests
     private void VerifyCacheMissUpstreamCalledOnceNoPersist()
     {
         _cityService.Verify(c => c.GetCityNames(), Times.Once);
+        _usaCityService.Verify(c => c.GetCityNames(), Times.Once);
         _cacheRepository.Verify(r => r.GetAsync("NEW YORK", It.IsAny<CancellationToken>()), Times.Once);
         _openMeteoClient.Verify(
             c => c.SearchLocationsAsync(
@@ -537,6 +596,7 @@ public sealed class CityGeocodingServiceTests
     private void AssertNoOtherCalls()
     {
         _cityService.VerifyNoOtherCalls();
+        _usaCityService.VerifyNoOtherCalls();
         _openMeteoClient.VerifyNoOtherCalls();
         _cacheRepository.VerifyNoOtherCalls();
         _timeProvider.VerifyNoOtherCalls();

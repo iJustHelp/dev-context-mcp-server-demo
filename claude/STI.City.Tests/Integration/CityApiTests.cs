@@ -359,6 +359,7 @@ public sealed class CityApiTests
     {
         using var factory = new CityApiFactory();
         factory.CityService.Setup(c => c.GetCityNames()).Returns(new[] { "london" });
+        factory.UsaCityService.Setup(c => c.GetCityNames()).Returns(Array.Empty<string>());
         factory.OpenMeteoClient
             .Setup(c => c.SearchLocationsAsync(
                 "London", It.IsAny<int?>(), It.IsAny<string>(),
@@ -384,6 +385,23 @@ public sealed class CityApiTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var actual = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
         Assert.Equal("London", actual!.CityName);
+    }
+
+    [Fact]
+    public async Task GetLocation_CityOnlyInUsaList_ResolvesViaMergedSearch()
+    {
+        using var factory = new CityApiFactory();
+        factory.CityService.Setup(c => c.GetCityNames()).Returns(new[] { "London" });
+        factory.UsaCityService.Setup(c => c.GetCityNames()).Returns(new[] { "New York" });
+        SetupNewYorkUpstream(factory, population: 8_804_190);
+        var client = factory.CreateClient();
+
+        var response = await client.GetAsync("/city/New%20York/location");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var actual = await response.Content.ReadFromJsonAsync<CityLocationResponse>();
+        Assert.Equal("New York", actual!.CityName);
+        VerifyUpstreamCalled(factory, Times.Once());
     }
 
     private static void SetupCities(CityApiFactory factory)

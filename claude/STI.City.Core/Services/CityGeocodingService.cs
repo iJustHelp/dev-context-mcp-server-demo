@@ -16,6 +16,7 @@ public sealed class CityGeocodingService : ICityGeocodingService
     private const string GeocodingLanguage = "en";
 
     private readonly ICityService _cityService;
+    private readonly IUsaCityService _usaCityService;
     private readonly IOpenMeteoClient _openMeteoClient;
     private readonly IGeocodingCacheRepository _cacheRepository;
     private readonly TimeProvider _timeProvider;
@@ -23,12 +24,14 @@ public sealed class CityGeocodingService : ICityGeocodingService
 
     public CityGeocodingService(
         ICityService cityService,
+        IUsaCityService usaCityService,
         IOpenMeteoClient openMeteoClient,
         IGeocodingCacheRepository cacheRepository,
         TimeProvider timeProvider,
         ILogger<CityGeocodingService> logger)
     {
         _cityService = cityService;
+        _usaCityService = usaCityService;
         _openMeteoClient = openMeteoClient;
         _cacheRepository = cacheRepository;
         _timeProvider = timeProvider;
@@ -45,7 +48,10 @@ public sealed class CityGeocodingService : ICityGeocodingService
             return CityGeocodingResult.CityNotFound;
         }
 
+        // Search the merged set of general and U.S. city names so a city present
+        // in either list resolves.
         var packageName = _cityService.GetCityNames()
+            .Concat(_usaCityService.GetCityNames())
             .FirstOrDefault(name => string.Equals(name, trimmed, StringComparison.OrdinalIgnoreCase));
         if (packageName is null)
         {
