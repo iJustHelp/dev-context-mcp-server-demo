@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../tests/http-tests/city-list.http" />
+  </Folder>
+  <Project Path="STI.City.API/STI.City.API.csproj" />
+  <Project Path="STI.City.Core/STI.City.Core.csproj" />
+  <Project Path="STI.City.Data/STI.City.Data.csproj" />
+  <Project Path="STI.City.Tests/STI.City.Tests.csproj" />
+</Solution>
