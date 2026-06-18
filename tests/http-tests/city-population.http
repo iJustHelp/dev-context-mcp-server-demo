@@ -1,7 +1,0 @@
-@host = {{host}}
-@city=los angeles
-
-### GET city population -> 200 application/json { cityName, country, population }
-# City name is URL-encoded per the spec matching rules.
-GET {{host}}/city/{{city}}/population
-Accept: application/json

@@ -1,5 +1,0 @@
-@host = {{host}}
-
-### GET U.S. city names -> 200 application/json, string[]
-GET {{host}}/city/usa
-Accept: application/json
