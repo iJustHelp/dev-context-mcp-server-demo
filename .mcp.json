@@ -4,7 +4,11 @@
       "url": "https://mcp.context7.com/mcp"
     },
     "devcontext": {
-      "url": "http://127.0.0.1:2222/mcp"
+      "type": "http",
+      "url": "http://127.0.0.1:2222/mcp",
+      "headers": {
+        "X-User-Name": "sbuyevich"
+      }
     }
   }
 }
