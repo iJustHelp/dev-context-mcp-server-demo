@@ -73,6 +73,19 @@ public sealed class GeocodingCacheRepositoryTests
         }.ToString();
 
     private static GeocodingCacheRecord Record(string key, string displayName, long? population) =>
-        new(key, displayName, "United States", 40.7128, -74.006, population,
-            new DateTimeOffset(2026, 6, 18, 12, 0, 0, TimeSpan.Zero));
+        new(
+            NormalizedCityName: key,
+            DisplayName: displayName,
+            Country: "United States",
+            Latitude: 40.7128,
+            Longitude: -74.006,
+            Population: population,
+            RetrievedAtUtc: new DateTimeOffset(
+                year: 2026,
+                month: 6,
+                day: 18,
+                hour: 12,
+                minute: 0,
+                second: 0,
+                offset: TimeSpan.Zero));
 }

@@ -10,7 +10,7 @@ public sealed class GeocodingCacheSchemaInitializer(string connectionString)
     {
         await using var connection = new SqliteConnection(connectionString);
         var command = new CommandDefinition(
-            """
+            commandText: """
             CREATE TABLE IF NOT EXISTS GeocodingCache (
                 NormalizedCityName TEXT NOT NULL PRIMARY KEY,
                 DisplayName TEXT NOT NULL,

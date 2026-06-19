@@ -53,6 +53,13 @@ public sealed class CityApiFactory : WebApplicationFactory<Program>
     private sealed class FixedTimeProvider : TimeProvider
     {
         public override DateTimeOffset GetUtcNow() =>
-            new(2026, 6, 18, 12, 0, 0, TimeSpan.Zero);
+            new(
+                year: 2026,
+                month: 6,
+                day: 18,
+                hour: 12,
+                minute: 0,
+                second: 0,
+                offset: TimeSpan.Zero);
     }
 }

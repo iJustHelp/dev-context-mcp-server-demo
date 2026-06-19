@@ -51,10 +51,10 @@ public static class CityEndpoints
         return result.Status switch
         {
             CityGeocodingStatus.Success => Results.Ok(new CityLocationResponse(
-                result.Record!.DisplayName,
-                result.Record.Country,
-                result.Record.Latitude,
-                result.Record.Longitude)),
+                CityName: result.Record!.DisplayName,
+                Country: result.Record.Country,
+                Latitude: result.Record.Latitude,
+                Longitude: result.Record.Longitude)),
             CityGeocodingStatus.CityNotFound => CityNotFound(),
             CityGeocodingStatus.GeocodingNotFound => GeocodingNotFound(),
             CityGeocodingStatus.ServiceUnavailable => ServiceUnavailable(),
@@ -75,9 +75,9 @@ public static class CityEndpoints
         {
             CityGeocodingStatus.Success => result.Record!.Population is { } population
                 ? Results.Ok(new CityPopulationResponse(
-                    result.Record.DisplayName,
-                    result.Record.Country,
-                    population))
+                    CityName: result.Record.DisplayName,
+                    Country: result.Record.Country,
+                    Population: population))
                 : PopulationNotFound(),
             CityGeocodingStatus.CityNotFound => CityNotFound(),
             CityGeocodingStatus.GeocodingNotFound => GeocodingNotFound(),

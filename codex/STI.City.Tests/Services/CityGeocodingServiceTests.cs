@@ -10,7 +10,14 @@ namespace STI.City.Tests.Services;
 
 public sealed class CityGeocodingServiceTests
 {
-    private static readonly DateTimeOffset Now = new(2026, 6, 18, 12, 0, 0, TimeSpan.Zero);
+    private static readonly DateTimeOffset Now = new(
+        year: 2026,
+        month: 6,
+        day: 18,
+        hour: 12,
+        minute: 0,
+        second: 0,
+        offset: TimeSpan.Zero);
 
     private readonly Mock<ICityService> _cityService = new(MockBehavior.Strict);
     private readonly Mock<IUsaCityService> _usaCityService = new(MockBehavior.Strict);
@@ -24,12 +31,12 @@ public sealed class CityGeocodingServiceTests
     {
         _usaCityService.Setup(s => s.GetCityNames()).Returns(Array.Empty<string>());
         _target = new CityGeocodingService(
-            _cityService.Object,
-            _usaCityService.Object,
-            _openMeteoClient.Object,
-            _cacheRepository.Object,
-            _timeProvider.Object,
-            _logger.Object);
+            cityService: _cityService.Object,
+            usaCityService: _usaCityService.Object,
+            openMeteoClient: _openMeteoClient.Object,
+            cacheRepository: _cacheRepository.Object,
+            timeProvider: _timeProvider.Object,
+            logger: _logger.Object);
     }
 
     [Fact]
@@ -179,7 +186,12 @@ public sealed class CityGeocodingServiceTests
         // arrange
         SetupNewYorkCacheMiss();
         _openMeteoClient.Setup(c => c.SearchLocationsAsync("New York", 10, "en", Format.Json, CancellationToken.None))
-            .ThrowsAsync(new ApiException("bad gateway", 502, string.Empty, new Dictionary<string, IEnumerable<string>>(), null!));
+            .ThrowsAsync(new ApiException(
+                message: "bad gateway",
+                statusCode: 502,
+                response: string.Empty,
+                headers: new Dictionary<string, IEnumerable<string>>(),
+                innerException: null!));
 
         // act
         var actual = await _target.GetGeocodingAsync("New York", CancellationToken.None);
@@ -245,7 +257,14 @@ public sealed class CityGeocodingServiceTests
     }
 
     private static GeocodingCacheRecord Record(string key, string displayName, long? population) =>
-        new(key, displayName, "United States", 40.7128, -74.006, population, Now);
+        new(
+            NormalizedCityName: key,
+            DisplayName: displayName,
+            Country: "United States",
+            Latitude: 40.7128,
+            Longitude: -74.006,
+            Population: population,
+            RetrievedAtUtc: Now);
 
     private static LocationResult Location(string name, long? population) => new()
     {

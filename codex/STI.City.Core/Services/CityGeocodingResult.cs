@@ -15,14 +15,14 @@ public sealed record CityGeocodingResult(
     GeocodingCacheRecord? Record = null)
 {
     public static CityGeocodingResult Success(GeocodingCacheRecord record) =>
-        new(CityGeocodingStatus.Success, record);
+        new(Status: CityGeocodingStatus.Success, Record: record);
 
     public static CityGeocodingResult CityNotFound { get; } =
-        new(CityGeocodingStatus.CityNotFound);
+        new(Status: CityGeocodingStatus.CityNotFound);
 
     public static CityGeocodingResult GeocodingNotFound { get; } =
-        new(CityGeocodingStatus.GeocodingNotFound);
+        new(Status: CityGeocodingStatus.GeocodingNotFound);
 
     public static CityGeocodingResult ServiceUnavailable { get; } =
-        new(CityGeocodingStatus.ServiceUnavailable);
+        new(Status: CityGeocodingStatus.ServiceUnavailable);
 }

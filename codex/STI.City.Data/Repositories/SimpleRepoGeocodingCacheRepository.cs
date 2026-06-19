@@ -19,12 +19,12 @@ public sealed class SimpleRepoGeocodingCacheRepository(string connectionString)
     {
         await using var connection = new SqliteConnection(connectionString);
         var command = new CommandDefinition(
-            """
+            commandText: """
             SELECT NormalizedCityName, DisplayName, Country, Latitude, Longitude, Population, RetrievedAtUtc
             FROM GeocodingCache
             WHERE NormalizedCityName = @NormalizedCityName
             """,
-            new { NormalizedCityName = normalizedCityName },
+            parameters: new { NormalizedCityName = normalizedCityName },
             cancellationToken: cancellationToken);
 
         var entity = await connection.QuerySingleOrDefaultAsync<GeocodingCacheEntity>(command)
@@ -39,7 +39,7 @@ public sealed class SimpleRepoGeocodingCacheRepository(string connectionString)
     {
         await using var connection = new SqliteConnection(connectionString);
         var command = new CommandDefinition(
-            """
+            commandText: """
             INSERT INTO GeocodingCache (
                 NormalizedCityName,
                 DisplayName,
@@ -64,7 +64,7 @@ public sealed class SimpleRepoGeocodingCacheRepository(string connectionString)
                 Population = excluded.Population,
                 RetrievedAtUtc = excluded.RetrievedAtUtc
             """,
-            new
+            parameters: new
             {
                 record.NormalizedCityName,
                 record.DisplayName,
@@ -81,13 +81,13 @@ public sealed class SimpleRepoGeocodingCacheRepository(string connectionString)
 
     private static GeocodingCacheRecord ToRecord(GeocodingCacheEntity entity) =>
         new(
-            entity.NormalizedCityName,
-            entity.DisplayName,
-            entity.Country,
-            entity.Latitude,
-            entity.Longitude,
-            entity.Population,
-            DateTimeOffset.Parse(entity.RetrievedAtUtc, CultureInfo.InvariantCulture));
+            NormalizedCityName: entity.NormalizedCityName,
+            DisplayName: entity.DisplayName,
+            Country: entity.Country,
+            Latitude: entity.Latitude,
+            Longitude: entity.Longitude,
+            Population: entity.Population,
+            RetrievedAtUtc: DateTimeOffset.Parse(entity.RetrievedAtUtc, CultureInfo.InvariantCulture));
 
     private static IConfiguration BuildConfiguration(string connectionString) =>
         new ConfigurationBuilder()

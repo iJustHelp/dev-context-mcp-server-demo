@@ -1,10 +1,10 @@
 {
   "profiles": {
-    "STI.City.API": {
+    "api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:5068",
+      "applicationUrl": "http://localhost:3333",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

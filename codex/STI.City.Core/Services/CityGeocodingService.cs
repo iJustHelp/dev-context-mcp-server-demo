@@ -115,13 +115,13 @@ public sealed class CityGeocodingService : ICityGeocodingService
         }
 
         var record = new GeocodingCacheRecord(
-            normalizedKey,
-            canonicalName,
-            match.Country,
-            match.Latitude,
-            match.Longitude,
-            match.Population,
-            _timeProvider.GetUtcNow());
+            NormalizedCityName: normalizedKey,
+            DisplayName: canonicalName,
+            Country: match.Country,
+            Latitude: match.Latitude,
+            Longitude: match.Longitude,
+            Population: match.Population,
+            RetrievedAtUtc: _timeProvider.GetUtcNow());
 
         await _cacheRepository.UpsertAsync(record, cancellationToken).ConfigureAwait(false);
         return CityGeocodingResult.Success(record);
