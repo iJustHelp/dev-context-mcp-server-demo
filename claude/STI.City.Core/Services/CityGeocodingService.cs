@@ -1,129 +1,88 @@
 using Demo.Cities;
-using Microsoft.Extensions.Logging;
-using OpenMeteo.Api.Client;
+using STI.City.Core.Abstractions;
+using STI.City.Core.Exceptions;
 using STI.City.Core.Models;
-using STI.City.Core.Repositories;
+using STI.City.Core.Time;
 
 namespace STI.City.Core.Services;
 
 /// <summary>
-/// Validates the requested city, performs the shared cache-aside lookup, and
-/// deterministically selects the upstream Open-Meteo result.
+/// Cache-aside orchestration for the city detail endpoints.
+///
+/// Flow (per the functional spec):
+/// <list type="number">
+///   <item>Resolve the requested name against <c>Demo.Cities</c>; unknown → 404, no upstream call (FR-6).</item>
+///   <item>Check the SQLite cache by normalized name; hit → serve without calling Open-Meteo (FR-8).</item>
+///   <item>Miss → call the provider. Empty result → 404 (FR-13); failure → 502 (FR-14).</item>
+///   <item>Otherwise persist the single record and return it (FR-9, FR-10, FR-11).</item>
+/// </list>
 /// </summary>
 public sealed class CityGeocodingService : ICityGeocodingService
 {
-    private const int GeocodingResultCount = 10;
-    private const string GeocodingLanguage = "en";
-
-    private readonly ICityService _cityService;
-    private readonly IUsaCityService _usaCityService;
-    private readonly IOpenMeteoClient _openMeteoClient;
-    private readonly IGeocodingCacheRepository _cacheRepository;
-    private readonly TimeProvider _timeProvider;
-    private readonly ILogger<CityGeocodingService> _logger;
+    private readonly ICityCatalog _catalog;
+    private readonly IGeocodingCacheRepository _cache;
+    private readonly IGeocodingProvider _provider;
+    private readonly IClock _clock;
 
     public CityGeocodingService(
-        ICityService cityService,
-        IUsaCityService usaCityService,
-        IOpenMeteoClient openMeteoClient,
-        IGeocodingCacheRepository cacheRepository,
-        TimeProvider timeProvider,
-        ILogger<CityGeocodingService> logger)
+        ICityCatalog catalog,
+        IGeocodingCacheRepository cache,
+        IGeocodingProvider provider,
+        IClock clock)
     {
-        _cityService = cityService;
-        _usaCityService = usaCityService;
-        _openMeteoClient = openMeteoClient;
-        _cacheRepository = cacheRepository;
-        _timeProvider = timeProvider;
-        _logger = logger;
+        _catalog = catalog;
+        _cache = cache;
+        _provider = provider;
+        _clock = clock;
     }
 
-    public async Task<CityGeocodingResult> GetGeocodingAsync(
-        string cityName,
-        CancellationToken cancellationToken = default)
+    public IReadOnlyList<string> GetCityNames() => _catalog.GetAllCityNames();
+
+    public IReadOnlyList<string> GetUsaCityNames() => _catalog.GetUsaCityNames();
+
+    public async Task<GeocodingLookup> GetGeocodingAsync(string cityName, CancellationToken cancellationToken = default)
     {
-        var trimmed = (cityName ?? string.Empty).Trim();
-        if (trimmed.Length == 0)
+        // FR-6: city must exist in Demo.Cities; otherwise 404 and no upstream call.
+        var canonicalName = _catalog.ResolveCanonicalName(cityName);
+        if (canonicalName is null)
         {
-            return CityGeocodingResult.CityNotFound;
+            return GeocodingLookup.CityNotFound();
         }
 
-        // Search the merged set of general and U.S. city names so a city present
-        // in either list resolves.
-        var packageName = _cityService.GetCityNames()
-            .Concat(_usaCityService.GetCityNames())
-            .FirstOrDefault(name => string.Equals(name, trimmed, StringComparison.OrdinalIgnoreCase));
-        if (packageName is null)
-        {
-            return CityGeocodingResult.CityNotFound;
-        }
+        // VR-3 / FR-11: the normalized name is the cache key (one record per city).
+        var normalizedName = Extensions.ToCityName(canonicalName);
 
-        // Canonical display spelling comes from the package's ToCityName helper
-        // (title case, e.g. "new york" -> "New York").
-        var canonicalName = packageName.ToCityName();
-        var normalizedKey = canonicalName.Trim().ToUpperInvariant();
-
-        var cached = await _cacheRepository.GetAsync(normalizedKey, cancellationToken)
-            .ConfigureAwait(false);
+        // FR-8: cache-aside read — a hit never calls Open-Meteo.
+        var cached = await _cache.GetAsync(normalizedName, cancellationToken);
         if (cached is not null)
         {
-            return CityGeocodingResult.Success(cached);
+            return GeocodingLookup.Found(cached);
         }
 
-        GeocodingResponse response;
+        // FR-9 / FR-13 / FR-14: cache miss → call the provider.
+        CityGeocoding? result;
         try
         {
-            response = await _openMeteoClient
-                .SearchLocationsAsync(canonicalName, GeocodingResultCount, GeocodingLanguage, Format.Json, cancellationToken)
-                .ConfigureAwait(false);
+            result = await _provider.FindAsync(canonicalName, cancellationToken);
         }
-        catch (ApiException ex)
+        catch (GeocodingUnavailableException)
         {
-            _logger.LogWarning(ex,
-                "Open-Meteo returned an unsuccessful response for {City} during {Operation}.",
-                canonicalName, nameof(GetGeocodingAsync));
-            return CityGeocodingResult.ServiceUnavailable;
-        }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            // Client disconnect: propagate cancellation, do not map to 502.
-            throw;
-        }
-        catch (OperationCanceledException ex)
-        {
-            _logger.LogWarning(ex,
-                "Open-Meteo timed out for {City} during {Operation}.",
-                canonicalName, nameof(GetGeocodingAsync));
-            return CityGeocodingResult.ServiceUnavailable;
-        }
-        catch (HttpRequestException ex)
-        {
-            _logger.LogWarning(ex,
-                "Open-Meteo transport failure for {City} during {Operation}.",
-                canonicalName, nameof(GetGeocodingAsync));
-            return CityGeocodingResult.ServiceUnavailable;
+            return GeocodingLookup.UpstreamUnavailable();
         }
 
-        var match = response.Results?
-            .FirstOrDefault(result =>
-                string.Equals(result.Name, canonicalName, StringComparison.OrdinalIgnoreCase));
-        if (match is null)
+        if (result is null)
         {
-            return CityGeocodingResult.GeocodingNotFound;
+            return GeocodingLookup.NoGeocodingResult();
         }
 
-        var record = new GeocodingCacheRecord(
-            NormalizedCityName: normalizedKey,
-            DisplayName: canonicalName,
-            Country: match.Country,
-            Latitude: match.Latitude,
-            Longitude: match.Longitude,
-            Population: match.Population,
-            RetrievedAtUtc: _timeProvider.GetUtcNow());
+        // FR-9 / FR-11: persist exactly one record keyed by the normalized name.
+        var record = result with
+        {
+            NormalizedName = normalizedName,
+            RetrievedAtUtc = _clock.UtcNow,
+        };
 
-        // Persistence failures propagate so the pipeline can return 500.
-        await _cacheRepository.UpsertAsync(record, cancellationToken).ConfigureAwait(false);
-
-        return CityGeocodingResult.Success(record);
+        await _cache.UpsertAsync(record, cancellationToken);
+        return GeocodingLookup.Found(record);
     }
 }

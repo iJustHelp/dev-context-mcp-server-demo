@@ -1,0 +1,25 @@
+@host = {{host}}
+@city=london
+//@city=new york
+
+### GET all city names -> 200 application/json, string[]
+GET {{host}}/city
+Accept: application/json
+
+### GET U.S. city names -> 200 application/json, string[]
+GET {{host}}/city/usa
+Accept: application/json
+
+### GET U.S. city names -> 200 application/json, string[]
+GET {{host}}/city/New%20York/population
+Accept: application/json
+
+### GET city location -> 200 application/json { cityName, country, latitude, longitude }
+# City name is URL-encoded per the spec matching rules.
+GET {{host}}/city/{{city}}/location
+Accept: application/json
+
+### GET city population -> 200 application/json { cityName, country, population }
+# City name is URL-encoded per the spec matching rules.
+GET {{host}}/city/{{city}}/population
+Accept: application/json

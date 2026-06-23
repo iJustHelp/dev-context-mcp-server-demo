@@ -1,6 +1,11 @@
 <Solution>
-  <Folder Name="/Solution Items/">
-    <File Path="../tests/http-tests/city-list.http" />
+  <Folder Name="/http-tests/">
+    <File Path="../http-tests/city-location.http" />
+    <File Path="../http-tests/city-population.http" />
+    <File Path="../http-tests/http-client.env.json" />
+    <File Path="../http-tests/README.md" />
+    <File Path="../http-tests/tests.http" />
+    <File Path="../http-tests/usa-cities.http" />
   </Folder>
   <Project Path="STI.City.API/STI.City.API.csproj" />
   <Project Path="STI.City.Core/STI.City.Core.csproj" />

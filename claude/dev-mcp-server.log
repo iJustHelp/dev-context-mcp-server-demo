@@ -1,0 +1,2546 @@
+[2026-06-23 15:20:23.442 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'initialize' request handler called.
+[2026-06-23 15:20:23.491 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0), Client (claude-code 2.1.186) method 'initialize' request handler completed in 0.373ms.
+[2026-06-23 15:20:23.547 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/list' request handler called.
+[2026-06-23 15:20:23.548 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'resources/list' request handler called.
+[2026-06-23 15:20:23.551 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/list' request handler completed in 0.9131ms.
+[2026-06-23 15:20:23.552 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'resources/list' request handler completed in 0.376ms.
+[2026-06-23 15:22:13.133 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:13.135 -05:00 INF] ModelContextProtocol.Server.McpServer: "ping" completed. IsError = false.
+[2026-06-23 15:22:13.138 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 2.6463ms.
+[2026-06-23 15:22:18.242 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:18.305 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation 9d2b2113e8684bff97d3020bb46e6371 request. PayloadBytes=101 PayloadTruncated=false Payload={
+  "query": "Demo.Cities",
+  "includePrerelease": false,
+  "limit": 10,
+  "environment": "qa"
+}
+[2026-06-23 15:22:18.325 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation 9d2b2113e8684bff97d3020bb46e6371 response after 17.8927 ms. PayloadBytes=491 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "matches": [
+      {
+        "libraryId": "nuget:qa/Demo.Cities",
+        "kind": "nuget",
+        "displayName": "Demo.Cities",
+        "environment": "qa",
+        "sourceId": "qaNuget",
+        "description": "Provides a small injectable city service backed by a fixed list of city names.",
+        "confidence": 1
+      }
+    ]
+  },
+  "resolvedContext": null,
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:18.327 -05:00 INF] ModelContextProtocol.Server.McpServer: "resolve_library" completed. IsError = false.
+[2026-06-23 15:22:18.328 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 83.9111ms.
+[2026-06-23 15:22:19.973 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:19.989 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation de9b0dfa974b48049abd14b55b78c953 request. PayloadBytes=110 PayloadTruncated=false Payload={
+  "query": "OpenMeteo.Api.Client",
+  "includePrerelease": false,
+  "limit": 10,
+  "environment": null
+}
+[2026-06-23 15:22:20.010 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation de9b0dfa974b48049abd14b55b78c953 response after 6.8311 ms. PayloadBytes=528 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "matches": [
+      {
+        "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+        "kind": "nuget",
+        "displayName": "OpenMeteo.Api.Client",
+        "environment": "prod",
+        "sourceId": "prodNuget",
+        "description": "Generated .NET client for the Open-Meteo Geocoding API with HttpClientFactory registration.",
+        "confidence": 1
+      }
+    ]
+  },
+  "resolvedContext": null,
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:20.021 -05:00 INF] ModelContextProtocol.Server.McpServer: "resolve_library" completed. IsError = false.
+[2026-06-23 15:22:20.022 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 48.5275ms.
+[2026-06-23 15:22:21.358 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:21.375 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation c623c3befc464d55aa947e86f1d6d1be request. PayloadBytes=126 PayloadTruncated=false Payload={
+  "query": "Formula.SimpleRepo SQLite repository",
+  "includePrerelease": false,
+  "limit": 10,
+  "environment": null
+}
+[2026-06-23 15:22:21.379 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation c623c3befc464d55aa947e86f1d6d1be response after 2.9011 ms. PayloadBytes=321 PayloadTruncated=false Payload={
+  "status": "not_found",
+  "data": {
+    "matches": []
+  },
+  "resolvedContext": null,
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": [
+    {
+      "code": "library_not_found",
+      "message": "No indexed library matched \u0027Formula.SimpleRepo SQLite repository\u0027."
+    }
+  ]
+}
+[2026-06-23 15:22:21.381 -05:00 INF] ModelContextProtocol.Server.McpServer: "resolve_library" completed. IsError = false.
+[2026-06-23 15:22:21.382 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 23.2765ms.
+[2026-06-23 15:22:23.207 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:23.223 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation e70035de20d2435e8a060b7511291563 request. PayloadBytes=121 PayloadTruncated=false Payload={
+  "query": "company-docs unit test template",
+  "includePrerelease": false,
+  "limit": 10,
+  "environment": null
+}
+[2026-06-23 15:22:23.231 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation e70035de20d2435e8a060b7511291563 response after 5.1099 ms. PayloadBytes=463 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "matches": [
+      {
+        "libraryId": "docs:company-docs",
+        "kind": "docs",
+        "displayName": "Company Docs",
+        "environment": null,
+        "sourceId": "company-docs",
+        "description": "Internal company documentation and standards.",
+        "confidence": 0.75
+      }
+    ]
+  },
+  "resolvedContext": null,
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:23.234 -05:00 INF] ModelContextProtocol.Server.McpServer: "resolve_library" completed. IsError = false.
+[2026-06-23 15:22:23.237 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 29.0439ms.
+[2026-06-23 15:22:28.248 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:28.265 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation ce8e3cbd154646e9b1c087668afb4c7f request. PayloadBytes=108 PayloadTruncated=false Payload={
+  "query": "Formula.SimpleRepo",
+  "includePrerelease": false,
+  "limit": 10,
+  "environment": null
+}
+[2026-06-23 15:22:28.270 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool resolve_library invocation ce8e3cbd154646e9b1c087668afb4c7f response after 4.1223 ms. PayloadBytes=777 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "matches": [
+      {
+        "libraryId": "nuget:public/Formula.SimpleRepo",
+        "kind": "nuget",
+        "displayName": "Formula.SimpleRepo",
+        "environment": "public",
+        "sourceId": "publicNuget",
+        "description": "Easy repositories for .Net built on Dapper.",
+        "confidence": 1
+      },
+      {
+        "libraryId": "docs:company-docs",
+        "kind": "docs",
+        "displayName": "Company Docs",
+        "environment": null,
+        "sourceId": "company-docs",
+        "description": "Internal company documentation and standards.",
+        "confidence": 0.73
+      }
+    ]
+  },
+  "resolvedContext": null,
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:28.273 -05:00 INF] ModelContextProtocol.Server.McpServer: "resolve_library" completed. IsError = false.
+[2026-06-23 15:22:28.278 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 28.8006ms.
+[2026-06-23 15:22:29.745 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:29.747 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool list_versions invocation 0448660284834d5a850c064923e98271 request. PayloadBytes=74 PayloadTruncated=false Payload={
+  "libraryId": "nuget:qa/Demo.Cities",
+  "includePrerelease": false
+}
+[2026-06-23 15:22:29.752 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool list_versions invocation 0448660284834d5a850c064923e98271 response after 3.3685 ms. PayloadBytes=1287 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "versions": [
+      {
+        "version": "2.1.1",
+        "listed": true,
+        "prerelease": false,
+        "deprecated": false,
+        "indexed": true,
+        "publishedAt": "2026-06-20T20:30:36.6185201+00:00"
+      },
+      {
+        "version": "2.0.1",
+        "listed": true,
+        "prerelease": false,
+        "deprecated": false,
+        "indexed": true,
+        "publishedAt": "2026-06-20T20:18:25.4680785+00:00"
+      },
+      {
+        "version": "1.1.1",
+        "listed": true,
+        "prerelease": false,
+        "deprecated": false,
+        "indexed": true,
+        "publishedAt": "2026-06-20T20:15:42.3617491+00:00"
+      },
+      {
+        "version": "1.1.0",
+        "listed": true,
+        "prerelease": false,
+        "deprecated": false,
+        "indexed": true,
+        "publishedAt": "2026-06-17T17:23:21.1413772+00:00"
+      }
+    ],
+    "recommendedVersion": "2.1.1",
+    "recommendedVersionReason": "latest_stable"
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:qa/Demo.Cities",
+    "sourceId": "qaNuget",
+    "environment": "qa",
+    "version": null,
+    "versionSelectionReason": null
+  },
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:29.754 -05:00 INF] ModelContextProtocol.Server.McpServer: "list_versions" completed. IsError = false.
+[2026-06-23 15:22:29.759 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 12.6997ms.
+[2026-06-23 15:22:31.377 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:31.378 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool list_versions invocation 1e43c1530796438482a9c1f94b9585e2 request. PayloadBytes=85 PayloadTruncated=false Payload={
+  "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+  "includePrerelease": false
+}
+[2026-06-23 15:22:31.383 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool list_versions invocation 1e43c1530796438482a9c1f94b9585e2 response after 3.2567 ms. PayloadBytes=645 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "versions": [
+      {
+        "version": "1.0.0",
+        "listed": true,
+        "prerelease": false,
+        "deprecated": false,
+        "indexed": true,
+        "publishedAt": "2026-06-17T17:23:21.1413772+00:00"
+      }
+    ],
+    "recommendedVersion": "1.0.0",
+    "recommendedVersionReason": "latest_stable"
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+    "sourceId": "prodNuget",
+    "environment": "prod",
+    "version": null,
+    "versionSelectionReason": null
+  },
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:31.385 -05:00 INF] ModelContextProtocol.Server.McpServer: "list_versions" completed. IsError = false.
+[2026-06-23 15:22:31.388 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 10.2734ms.
+[2026-06-23 15:22:36.600 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:36.601 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool list_versions invocation 13777f1348b241ba826663b853887988 request. PayloadBytes=85 PayloadTruncated=false Payload={
+  "libraryId": "nuget:public/Formula.SimpleRepo",
+  "includePrerelease": false
+}
+[2026-06-23 15:22:36.607 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool list_versions invocation 13777f1348b241ba826663b853887988 response after 3.3149 ms. PayloadBytes=860 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "versions": [
+      {
+        "version": "2.8.1",
+        "listed": true,
+        "prerelease": false,
+        "deprecated": false,
+        "indexed": true,
+        "publishedAt": "2025-10-28T14:26:51.163-05:00"
+      },
+      {
+        "version": "1.8.8",
+        "listed": true,
+        "prerelease": false,
+        "deprecated": false,
+        "indexed": true,
+        "publishedAt": "2025-09-19T11:21:51.653-05:00"
+      }
+    ],
+    "recommendedVersion": "2.8.1",
+    "recommendedVersionReason": "latest_stable"
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:public/Formula.SimpleRepo",
+    "sourceId": "publicNuget",
+    "environment": "public",
+    "version": null,
+    "versionSelectionReason": null
+  },
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:36.608 -05:00 INF] ModelContextProtocol.Server.McpServer: "list_versions" completed. IsError = false.
+[2026-06-23 15:22:36.611 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 9.9339ms.
+[2026-06-23 15:22:37.902 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:37.904 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation ad09d227a125425885d03d0fbc662efd request. PayloadBytes=317 PayloadTruncated=false Payload={
+  "libraryId": "nuget:qa/Demo.Cities",
+  "question": "How do I register and use ICityService and IUsaCityService to get city names? What DI registration extension is provided?",
+  "version": "2.1.1",
+  "targetFramework": "net10.0",
+  "maxResults": 8,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:22:37.920 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation ad09d227a125425885d03d0fbc662efd response after 15.3774 ms. PayloadBytes=7151 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "fragments": [],
+    "symbols": [
+      {
+        "name": "Demo.Cities.ICityService",
+        "signature": "public interface Demo.Cities.ICityService",
+        "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ICityService"
+      },
+      {
+        "name": "Demo.Cities.IUsaCityService",
+        "signature": "public interface Demo.Cities.IUsaCityService",
+        "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.IUsaCityService"
+      },
+      {
+        "name": "Demo.Cities.ICityService.GetCityNames",
+        "signature": "public System.Collections.Generic.IReadOnlyList\u003Cstring\u003E GetCityNames()",
+        "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ICityService.GetCityNames"
+      },
+      {
+        "name": "Demo.Cities.IUsaCityService.GetCityNames",
+        "signature": "public System.Collections.Generic.IReadOnlyList\u003Cstring\u003E GetCityNames()",
+        "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.IUsaCityService.GetCityNames"
+      },
+      {
+        "name": "Demo.Cities.Extensions",
+        "signature": "public type Demo.Cities.Extensions",
+        "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.Extensions"
+      },
+      {
+        "name": "Demo.Cities.Extensions.ToCityName",
+        "signature": "public static string ToCityName(string cityName)",
+        "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.Extensions.ToCityName"
+      },
+      {
+        "name": "Demo.Cities.ServiceCollectionExtensions",
+        "signature": "public type Demo.Cities.ServiceCollectionExtensions",
+        "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ServiceCollectionExtensions"
+      },
+      {
+        "name": "Demo.Cities.ServiceCollectionExtensions.AddDemoCities",
+        "signature": "public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddDemoCities(Microsoft.Extensions.DependencyInjection.IServiceCollection services)",
+        "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ServiceCollectionExtensions.AddDemoCities"
+      }
+    ],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:qa/Demo.Cities",
+    "sourceId": "qaNuget",
+    "environment": "qa",
+    "version": "2.1.1",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "Demo.Cities.ICityService",
+      "text": "public interface Demo.Cities.ICityService\r\nsummary: Provides city names.",
+      "score": 0.9,
+      "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ICityService"
+    },
+    {
+      "kind": "symbol",
+      "title": "Demo.Cities.IUsaCityService",
+      "text": "public interface Demo.Cities.IUsaCityService\r\nsummary: Provides United States city names.",
+      "score": 0.9,
+      "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.IUsaCityService"
+    },
+    {
+      "kind": "symbol",
+      "title": "Demo.Cities.ICityService.GetCityNames",
+      "text": "public System.Collections.Generic.IReadOnlyList\u003Cstring\u003E GetCityNames()\r\nsummary: Gets the available city names in alphabetical order. returns: A read-only list of city names.",
+      "score": 0.85,
+      "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ICityService.GetCityNames"
+    },
+    {
+      "kind": "symbol",
+      "title": "Demo.Cities.IUsaCityService.GetCityNames",
+      "text": "public System.Collections.Generic.IReadOnlyList\u003Cstring\u003E GetCityNames()\r\nsummary: Gets the available United States city names in alphabetical order. returns: A read-only list of United States city names.",
+      "score": 0.85,
+      "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.IUsaCityService.GetCityNames"
+    },
+    {
+      "kind": "symbol",
+      "title": "Demo.Cities.Extensions",
+      "text": "public type Demo.Cities.Extensions\r\nsummary: Provides extension methods",
+      "score": 0.8,
+      "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.Extensions"
+    },
+    {
+      "kind": "symbol",
+      "title": "Demo.Cities.Extensions.ToCityName",
+      "text": "public static string ToCityName(string cityName)",
+      "score": 0.8,
+      "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.Extensions.ToCityName"
+    },
+    {
+      "kind": "symbol",
+      "title": "Demo.Cities.ServiceCollectionExtensions",
+      "text": "public type Demo.Cities.ServiceCollectionExtensions\r\nsummary: Extension methods for registering Demo.Cities services.",
+      "score": 0.8,
+      "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ServiceCollectionExtensions"
+    },
+    {
+      "kind": "symbol",
+      "title": "Demo.Cities.ServiceCollectionExtensions.AddDemoCities",
+      "text": "public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddDemoCities(Microsoft.Extensions.DependencyInjection.IServiceCollection services)",
+      "score": 0.8,
+      "citationUri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ServiceCollectionExtensions.AddDemoCities"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ICityService",
+      "label": "Demo.Cities.ICityService",
+      "location": "T:Demo.Cities.ICityService"
+    },
+    {
+      "uri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.IUsaCityService",
+      "label": "Demo.Cities.IUsaCityService",
+      "location": "T:Demo.Cities.IUsaCityService"
+    },
+    {
+      "uri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ICityService.GetCityNames",
+      "label": "Demo.Cities.ICityService.GetCityNames",
+      "location": "M:Demo.Cities.ICityService.GetCityNames"
+    },
+    {
+      "uri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.IUsaCityService.GetCityNames",
+      "label": "Demo.Cities.IUsaCityService.GetCityNames",
+      "location": "M:Demo.Cities.IUsaCityService.GetCityNames"
+    },
+    {
+      "uri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.Extensions",
+      "label": "Demo.Cities.Extensions",
+      "location": "T:Demo.Cities.Extensions"
+    },
+    {
+      "uri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.Extensions.ToCityName",
+      "label": "Demo.Cities.Extensions.ToCityName",
+      "location": "M:Demo.Cities.Extensions.ToCityName"
+    },
+    {
+      "uri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ServiceCollectionExtensions",
+      "label": "Demo.Cities.ServiceCollectionExtensions",
+      "location": "T:Demo.Cities.ServiceCollectionExtensions"
+    },
+    {
+      "uri": "nuget://qaNuget/Demo.Cities/2.1.1/symbol/Demo.Cities.ServiceCollectionExtensions.AddDemoCities",
+      "label": "Demo.Cities.ServiceCollectionExtensions.AddDemoCities",
+      "location": "M:Demo.Cities.ServiceCollectionExtensions.AddDemoCities"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:37.924 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:22:37.926 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 22.8533ms.
+[2026-06-23 15:22:39.786 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:39.788 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 066b8f109b41451aa2206feeadbfa90f request. PayloadBytes=368 PayloadTruncated=false Payload={
+  "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+  "question": "How do I register IOpenMeteoClient with DI and call SearchLocationsAsync? What does GeocodingResponse and LocationResult contain, and what exceptions are thrown?",
+  "version": "1.0.0",
+  "targetFramework": "net10.0",
+  "maxResults": 8,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:22:39.807 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 066b8f109b41451aa2206feeadbfa90f response after 16.704 ms. PayloadBytes=8472 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "fragments": [],
+    "symbols": [
+      {
+        "name": "OpenMeteo.Api.Client.GeocodingResponse",
+        "signature": "public type OpenMeteo.Api.Client.GeocodingResponse",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse",
+        "signature": "public GeocodingResponse()",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.IOpenMeteoClient",
+        "signature": "public interface OpenMeteo.Api.Client.IOpenMeteoClient",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync",
+        "signature": "public System.Threading.Tasks.Task\u003COpenMeteo.Api.Client.GeocodingResponse\u003E SearchLocationsAsync(string name, System.Nullable\u003Cint\u003E count, string language, System.Nullable\u003COpenMeteo.Api.Client.Format\u003E format)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync",
+        "signature": "public System.Threading.Tasks.Task\u003COpenMeteo.Api.Client.GeocodingResponse\u003E SearchLocationsAsync(string name, System.Nullable\u003Cint\u003E count, string language, System.Nullable\u003COpenMeteo.Api.Client.Format\u003E format, System.Threading.CancellationToken cancellationToken)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult",
+        "signature": "public type OpenMeteo.Api.Client.LocationResult",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.LocationResult",
+        "signature": "public LocationResult()",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.LocationResult"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.OpenMeteoClient.SearchLocationsAsync",
+        "signature": "public System.Threading.Tasks.Task\u003COpenMeteo.Api.Client.GeocodingResponse\u003E SearchLocationsAsync(string name, System.Nullable\u003Cint\u003E count, string language, System.Nullable\u003COpenMeteo.Api.Client.Format\u003E format)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.OpenMeteoClient.SearchLocationsAsync"
+      }
+    ],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+    "sourceId": "prodNuget",
+    "environment": "prod",
+    "version": "1.0.0",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.GeocodingResponse",
+      "text": "public type OpenMeteo.Api.Client.GeocodingResponse",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse",
+      "text": "public GeocodingResponse()",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.IOpenMeteoClient",
+      "text": "public interface OpenMeteo.Api.Client.IOpenMeteoClient",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync",
+      "text": "public System.Threading.Tasks.Task\u003COpenMeteo.Api.Client.GeocodingResponse\u003E SearchLocationsAsync(string name, System.Nullable\u003Cint\u003E count, string language, System.Nullable\u003COpenMeteo.Api.Client.Format\u003E format)",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync",
+      "text": "public System.Threading.Tasks.Task\u003COpenMeteo.Api.Client.GeocodingResponse\u003E SearchLocationsAsync(string name, System.Nullable\u003Cint\u003E count, string language, System.Nullable\u003COpenMeteo.Api.Client.Format\u003E format, System.Threading.CancellationToken cancellationToken)",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult",
+      "text": "public type OpenMeteo.Api.Client.LocationResult",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.LocationResult",
+      "text": "public LocationResult()",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.LocationResult"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.OpenMeteoClient.SearchLocationsAsync",
+      "text": "public System.Threading.Tasks.Task\u003COpenMeteo.Api.Client.GeocodingResponse\u003E SearchLocationsAsync(string name, System.Nullable\u003Cint\u003E count, string language, System.Nullable\u003COpenMeteo.Api.Client.Format\u003E format)",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.OpenMeteoClient.SearchLocationsAsync"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse",
+      "label": "OpenMeteo.Api.Client.GeocodingResponse",
+      "location": "T:OpenMeteo.Api.Client.GeocodingResponse"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse",
+      "label": "OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse",
+      "location": "M:OpenMeteo.Api.Client.GeocodingResponse.#ctor"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient",
+      "label": "OpenMeteo.Api.Client.IOpenMeteoClient",
+      "location": "T:OpenMeteo.Api.Client.IOpenMeteoClient"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync",
+      "label": "OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync",
+      "location": "M:OpenMeteo.Api.Client.IOpenMeteoClient.SearchLocationsAsync"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult",
+      "label": "OpenMeteo.Api.Client.LocationResult",
+      "location": "T:OpenMeteo.Api.Client.LocationResult"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.LocationResult",
+      "label": "OpenMeteo.Api.Client.LocationResult.LocationResult",
+      "location": "M:OpenMeteo.Api.Client.LocationResult.#ctor"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.OpenMeteoClient.SearchLocationsAsync",
+      "label": "OpenMeteo.Api.Client.OpenMeteoClient.SearchLocationsAsync",
+      "location": "M:OpenMeteo.Api.Client.OpenMeteoClient.SearchLocationsAsync"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "response_truncated",
+      "message": "Some evidence was omitted to respect the configured response limit."
+    }
+  ],
+  "errors": []
+}
+[2026-06-23 15:22:39.811 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:22:39.811 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 24.0035ms.
+[2026-06-23 15:22:48.644 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:48.645 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation 14c484067d7e43c4b628748e73b794bc request. PayloadBytes=215 PayloadTruncated=false Payload={
+  "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+  "symbol": "OpenMeteo.Api.Client.LocationResult",
+  "version": "1.0.0",
+  "targetFramework": null,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:22:48.652 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation 14c484067d7e43c4b628748e73b794bc response after 4.5335 ms. PayloadBytes=1354 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "symbol": {
+      "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult",
+      "kind": "type",
+      "signature": "public type OpenMeteo.Api.Client.LocationResult",
+      "documentation": null,
+      "assembly": "lib/net10.0/OpenMeteo.Api.Client.dll",
+      "targetFrameworks": [
+        "net10.0"
+      ],
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult",
+      "relatedMembers": []
+    },
+    "candidates": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+    "sourceId": "prodNuget",
+    "environment": "prod",
+    "version": "1.0.0",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult",
+      "text": "public type OpenMeteo.Api.Client.LocationResult",
+      "score": 1,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult",
+      "label": "OpenMeteo.Api.Client.LocationResult",
+      "location": "T:OpenMeteo.Api.Client.LocationResult"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:48.654 -05:00 INF] ModelContextProtocol.Server.McpServer: "get_symbol" completed. IsError = false.
+[2026-06-23 15:22:48.656 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 11.3638ms.
+[2026-06-23 15:22:49.914 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:49.915 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation f74d52fd213f448fb12a593d43d6f536 request. PayloadBytes=218 PayloadTruncated=false Payload={
+  "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+  "symbol": "OpenMeteo.Api.Client.GeocodingResponse",
+  "version": "1.0.0",
+  "targetFramework": null,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:22:49.922 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation f74d52fd213f448fb12a593d43d6f536 response after 4.609 ms. PayloadBytes=1381 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "symbol": {
+      "fullyQualifiedName": "OpenMeteo.Api.Client.GeocodingResponse",
+      "kind": "type",
+      "signature": "public type OpenMeteo.Api.Client.GeocodingResponse",
+      "documentation": null,
+      "assembly": "lib/net10.0/OpenMeteo.Api.Client.dll",
+      "targetFrameworks": [
+        "net10.0"
+      ],
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse",
+      "relatedMembers": []
+    },
+    "candidates": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+    "sourceId": "prodNuget",
+    "environment": "prod",
+    "version": "1.0.0",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.GeocodingResponse",
+      "text": "public type OpenMeteo.Api.Client.GeocodingResponse",
+      "score": 1,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse",
+      "label": "OpenMeteo.Api.Client.GeocodingResponse",
+      "location": "T:OpenMeteo.Api.Client.GeocodingResponse"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:22:49.924 -05:00 INF] ModelContextProtocol.Server.McpServer: "get_symbol" completed. IsError = false.
+[2026-06-23 15:22:49.927 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 11.9174ms.
+[2026-06-23 15:22:51.384 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:22:51.386 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation e107da275f3544378de49f4043329adc request. PayloadBytes=365 PayloadTruncated=false Payload={
+  "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+  "question": "What is the DI registration extension method to add IOpenMeteoClient with HttpClientFactory, and what exception type (ApiException) is thrown on HTTP failure?",
+  "version": "1.0.0",
+  "targetFramework": "net10.0",
+  "maxResults": 8,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:22:51.410 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation e107da275f3544378de49f4043329adc response after 21.6552 ms. PayloadBytes=8224 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "fragments": [],
+    "symbols": [
+      {
+        "name": "OpenMeteo.Api.Client.ApiException",
+        "signature": "public type OpenMeteo.Api.Client.ApiException",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException.ApiException",
+        "signature": "public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E headers, System.Exception innerException)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.ApiException"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.IOpenMeteoClient",
+        "signature": "public interface OpenMeteo.Api.Client.IOpenMeteoClient",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException\u00601",
+        "signature": "public type OpenMeteo.Api.Client.ApiException\u00601",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException\u00601.ApiException\u00601",
+        "signature": "public ApiException\u00601(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E headers, T0 result, System.Exception innerException)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.ApiException%601"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException\u00601.Result",
+        "signature": "public T0 Result { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.Result"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException.Headers",
+        "signature": "public System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E Headers { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Headers"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException.Response",
+        "signature": "public string Response { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Response"
+      }
+    ],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+    "sourceId": "prodNuget",
+    "environment": "prod",
+    "version": "1.0.0",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException",
+      "text": "public type OpenMeteo.Api.Client.ApiException",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException.ApiException",
+      "text": "public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E headers, System.Exception innerException)",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.ApiException"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.IOpenMeteoClient",
+      "text": "public interface OpenMeteo.Api.Client.IOpenMeteoClient",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException\u00601",
+      "text": "public type OpenMeteo.Api.Client.ApiException\u00601",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException\u00601.ApiException\u00601",
+      "text": "public ApiException\u00601(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E headers, T0 result, System.Exception innerException)",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.ApiException%601"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException\u00601.Result",
+      "text": "public T0 Result { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.Result"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException.Headers",
+      "text": "public System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E Headers { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Headers"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException.Response",
+      "text": "public string Response { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Response"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException",
+      "label": "OpenMeteo.Api.Client.ApiException",
+      "location": "T:OpenMeteo.Api.Client.ApiException"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.ApiException",
+      "label": "OpenMeteo.Api.Client.ApiException.ApiException",
+      "location": "M:OpenMeteo.Api.Client.ApiException.#ctor"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.IOpenMeteoClient",
+      "label": "OpenMeteo.Api.Client.IOpenMeteoClient",
+      "location": "T:OpenMeteo.Api.Client.IOpenMeteoClient"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601",
+      "label": "OpenMeteo.Api.Client.ApiException\u00601",
+      "location": "T:OpenMeteo.Api.Client.ApiException\u00601"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.ApiException%601",
+      "label": "OpenMeteo.Api.Client.ApiException\u00601.ApiException\u00601",
+      "location": "M:OpenMeteo.Api.Client.ApiException\u00601.#ctor"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.Result",
+      "label": "OpenMeteo.Api.Client.ApiException\u00601.Result",
+      "location": "P:OpenMeteo.Api.Client.ApiException\u00601.Result"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Headers",
+      "label": "OpenMeteo.Api.Client.ApiException.Headers",
+      "location": "P:OpenMeteo.Api.Client.ApiException.Headers"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Response",
+      "label": "OpenMeteo.Api.Client.ApiException.Response",
+      "location": "P:OpenMeteo.Api.Client.ApiException.Response"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "response_truncated",
+      "message": "Some evidence was omitted to respect the configured response limit."
+    }
+  ],
+  "errors": []
+}
+[2026-06-23 15:22:51.414 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:22:51.415 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 29.7577ms.
+[2026-06-23 15:23:01.766 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:23:01.767 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation b128c12ea5b040f7b45568d9ad319a04 request. PayloadBytes=364 PayloadTruncated=false Payload={
+  "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+  "question": "What are the public properties of LocationResult (Name, Country, Latitude, Longitude, Population, Id) and what is the Results property on GeocodingResponse?",
+  "version": "1.0.0",
+  "targetFramework": "net10.0",
+  "maxResults": 15,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:23:01.783 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation b128c12ea5b040f7b45568d9ad319a04 response after 14.1735 ms. PayloadBytes=13862 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "fragments": [],
+    "symbols": [
+      {
+        "name": "OpenMeteo.Api.Client.GeocodingResponse",
+        "signature": "public type OpenMeteo.Api.Client.GeocodingResponse",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse",
+        "signature": "public GeocodingResponse()",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult",
+        "signature": "public type OpenMeteo.Api.Client.LocationResult",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.Country",
+        "signature": "public string Country { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Country"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.Latitude",
+        "signature": "public double Latitude { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Latitude"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.LocationResult",
+        "signature": "public LocationResult()",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.LocationResult"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.Longitude",
+        "signature": "public double Longitude { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Longitude"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.Population",
+        "signature": "public System.Nullable\u003Cint\u003E Population { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Population"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.GeocodingResponse.AdditionalProperties",
+        "signature": "public System.Collections.Generic.IDictionary\u003Cstring, object\u003E AdditionalProperties { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.AdditionalProperties"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.AdditionalProperties",
+        "signature": "public System.Collections.Generic.IDictionary\u003Cstring, object\u003E AdditionalProperties { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.AdditionalProperties"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.GeocodingResponse.Generationtime_ms",
+        "signature": "public double Generationtime_ms { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.Generationtime_ms"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.GeocodingResponse.Results",
+        "signature": "public System.Collections.Generic.ICollection\u003COpenMeteo.Api.Client.LocationResult\u003E Results { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.Results"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.Admin1",
+        "signature": "public string Admin1 { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin1"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.Admin1_id",
+        "signature": "public System.Nullable\u003Cint\u003E Admin1_id { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin1_id"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.LocationResult.Admin2",
+        "signature": "public string Admin2 { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin2"
+      }
+    ],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+    "sourceId": "prodNuget",
+    "environment": "prod",
+    "version": "1.0.0",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.GeocodingResponse",
+      "text": "public type OpenMeteo.Api.Client.GeocodingResponse",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse",
+      "text": "public GeocodingResponse()",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult",
+      "text": "public type OpenMeteo.Api.Client.LocationResult",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.Country",
+      "text": "public string Country { get; set;  }",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Country"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.Latitude",
+      "text": "public double Latitude { get; set;  }",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Latitude"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.LocationResult",
+      "text": "public LocationResult()",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.LocationResult"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.Longitude",
+      "text": "public double Longitude { get; set;  }",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Longitude"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.Population",
+      "text": "public System.Nullable\u003Cint\u003E Population { get; set;  }",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Population"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.GeocodingResponse.AdditionalProperties",
+      "text": "public System.Collections.Generic.IDictionary\u003Cstring, object\u003E AdditionalProperties { get; set;  }",
+      "score": 0.85,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.AdditionalProperties"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.AdditionalProperties",
+      "text": "public System.Collections.Generic.IDictionary\u003Cstring, object\u003E AdditionalProperties { get; set;  }",
+      "score": 0.85,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.AdditionalProperties"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.GeocodingResponse.Generationtime_ms",
+      "text": "public double Generationtime_ms { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.Generationtime_ms"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.GeocodingResponse.Results",
+      "text": "public System.Collections.Generic.ICollection\u003COpenMeteo.Api.Client.LocationResult\u003E Results { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.Results"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.Admin1",
+      "text": "public string Admin1 { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin1"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.Admin1_id",
+      "text": "public System.Nullable\u003Cint\u003E Admin1_id { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin1_id"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.Admin2",
+      "text": "public string Admin2 { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin2"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse",
+      "label": "OpenMeteo.Api.Client.GeocodingResponse",
+      "location": "T:OpenMeteo.Api.Client.GeocodingResponse"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse",
+      "label": "OpenMeteo.Api.Client.GeocodingResponse.GeocodingResponse",
+      "location": "M:OpenMeteo.Api.Client.GeocodingResponse.#ctor"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult",
+      "label": "OpenMeteo.Api.Client.LocationResult",
+      "location": "T:OpenMeteo.Api.Client.LocationResult"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Country",
+      "label": "OpenMeteo.Api.Client.LocationResult.Country",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.Country"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Latitude",
+      "label": "OpenMeteo.Api.Client.LocationResult.Latitude",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.Latitude"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.LocationResult",
+      "label": "OpenMeteo.Api.Client.LocationResult.LocationResult",
+      "location": "M:OpenMeteo.Api.Client.LocationResult.#ctor"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Longitude",
+      "label": "OpenMeteo.Api.Client.LocationResult.Longitude",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.Longitude"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Population",
+      "label": "OpenMeteo.Api.Client.LocationResult.Population",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.Population"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.AdditionalProperties",
+      "label": "OpenMeteo.Api.Client.GeocodingResponse.AdditionalProperties",
+      "location": "P:OpenMeteo.Api.Client.GeocodingResponse.AdditionalProperties"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.AdditionalProperties",
+      "label": "OpenMeteo.Api.Client.LocationResult.AdditionalProperties",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.AdditionalProperties"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.Generationtime_ms",
+      "label": "OpenMeteo.Api.Client.GeocodingResponse.Generationtime_ms",
+      "location": "P:OpenMeteo.Api.Client.GeocodingResponse.Generationtime_ms"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.GeocodingResponse.Results",
+      "label": "OpenMeteo.Api.Client.GeocodingResponse.Results",
+      "location": "P:OpenMeteo.Api.Client.GeocodingResponse.Results"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin1",
+      "label": "OpenMeteo.Api.Client.LocationResult.Admin1",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.Admin1"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin1_id",
+      "label": "OpenMeteo.Api.Client.LocationResult.Admin1_id",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.Admin1_id"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Admin2",
+      "label": "OpenMeteo.Api.Client.LocationResult.Admin2",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.Admin2"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "response_truncated",
+      "message": "Some evidence was omitted to respect the configured response limit."
+    }
+  ],
+  "errors": []
+}
+[2026-06-23 15:23:01.789 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:23:01.796 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 29.3183ms.
+[2026-06-23 15:23:04.172 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:23:04.173 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 203afc3e450c4574864e7778ff8d22b3 request. PayloadBytes=356 PayloadTruncated=false Payload={
+  "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+  "question": "ServiceCollection extension method to register the OpenMeteo client, e.g. AddOpenMeteoClient or AddOpenMeteoApiClient with base address configuration",
+  "version": "1.0.0",
+  "targetFramework": "net10.0",
+  "maxResults": 8,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:23:04.189 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 203afc3e450c4574864e7778ff8d22b3 response after 13.9132 ms. PayloadBytes=8928 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "fragments": [],
+    "symbols": [
+      {
+        "name": "OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient",
+        "signature": "public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddOpenMeteoApiClient(Microsoft.Extensions.DependencyInjection.IServiceCollection services)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient",
+        "signature": "public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddOpenMeteoApiClient(Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action\u003CSystem.Net.Http.HttpClient\u003E configureClient)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException",
+        "signature": "public type OpenMeteo.Api.Client.ApiException",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException\u00601",
+        "signature": "public type OpenMeteo.Api.Client.ApiException\u00601",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException\u00601.ApiException\u00601",
+        "signature": "public ApiException\u00601(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E headers, T0 result, System.Exception innerException)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.ApiException%601"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException\u00601.Result",
+        "signature": "public T0 Result { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.Result"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException.ApiException",
+        "signature": "public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E headers, System.Exception innerException)",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.ApiException"
+      },
+      {
+        "name": "OpenMeteo.Api.Client.ApiException.Headers",
+        "signature": "public System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E Headers { get; set;  }",
+        "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Headers"
+      }
+    ],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+    "sourceId": "prodNuget",
+    "environment": "prod",
+    "version": "1.0.0",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient",
+      "text": "public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddOpenMeteoApiClient(Microsoft.Extensions.DependencyInjection.IServiceCollection services)",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient",
+      "text": "public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddOpenMeteoApiClient(Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action\u003CSystem.Net.Http.HttpClient\u003E configureClient)",
+      "score": 0.9,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException",
+      "text": "public type OpenMeteo.Api.Client.ApiException",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException\u00601",
+      "text": "public type OpenMeteo.Api.Client.ApiException\u00601",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException\u00601.ApiException\u00601",
+      "text": "public ApiException\u00601(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E headers, T0 result, System.Exception innerException)",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.ApiException%601"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException\u00601.Result",
+      "text": "public T0 Result { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.Result"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException.ApiException",
+      "text": "public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E headers, System.Exception innerException)",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.ApiException"
+    },
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.ApiException.Headers",
+      "text": "public System.Collections.Generic.IReadOnlyDictionary\u003Cstring, System.Collections.Generic.IEnumerable\u003Cstring\u003E\u003E Headers { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Headers"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient",
+      "label": "OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient",
+      "location": "M:OpenMeteo.Api.Client.ServiceCollectionExtensions.AddOpenMeteoApiClient"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException",
+      "label": "OpenMeteo.Api.Client.ApiException",
+      "location": "T:OpenMeteo.Api.Client.ApiException"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601",
+      "label": "OpenMeteo.Api.Client.ApiException\u00601",
+      "location": "T:OpenMeteo.Api.Client.ApiException\u00601"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.ApiException%601",
+      "label": "OpenMeteo.Api.Client.ApiException\u00601.ApiException\u00601",
+      "location": "M:OpenMeteo.Api.Client.ApiException\u00601.#ctor"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException%601.Result",
+      "label": "OpenMeteo.Api.Client.ApiException\u00601.Result",
+      "location": "P:OpenMeteo.Api.Client.ApiException\u00601.Result"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.ApiException",
+      "label": "OpenMeteo.Api.Client.ApiException.ApiException",
+      "location": "M:OpenMeteo.Api.Client.ApiException.#ctor"
+    },
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.ApiException.Headers",
+      "label": "OpenMeteo.Api.Client.ApiException.Headers",
+      "location": "P:OpenMeteo.Api.Client.ApiException.Headers"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "response_truncated",
+      "message": "Some evidence was omitted to respect the configured response limit."
+    }
+  ],
+  "errors": []
+}
+[2026-06-23 15:23:04.192 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:23:04.195 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 22.5464ms.
+[2026-06-23 15:23:05.771 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:23:05.773 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation ca29f3fa15eb420ebbe28d57fa058545 request. PayloadBytes=365 PayloadTruncated=false Payload={
+  "libraryId": "nuget:public/Formula.SimpleRepo",
+  "question": "How do I define a Repo/Repository for an entity with SQLite, register it, and perform upsert/get-by-key queries? Show the Repo base class and required setup.",
+  "version": "2.8.1",
+  "targetFramework": "net10.0",
+  "maxResults": 15,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:23:05.801 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation ca29f3fa15eb420ebbe28d57fa058545 response after 24.5456 ms. PayloadBytes=569 PayloadTruncated=false Payload={
+  "status": "insufficient_evidence",
+  "data": {
+    "fragments": [],
+    "symbols": [],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:public/Formula.SimpleRepo",
+    "sourceId": "publicNuget",
+    "environment": "public",
+    "version": "2.8.1",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": [
+    {
+      "code": "insufficient_evidence",
+      "message": "The package version is indexed, but no sufficiently relevant evidence was found."
+    }
+  ]
+}
+[2026-06-23 15:23:05.804 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:23:05.809 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 36.473ms.
+[2026-06-23 15:23:13.660 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:23:13.662 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation e2218aa84ffa477e965933f554539389 request. PayloadBytes=184 PayloadTruncated=false Payload={
+  "libraryId": "nuget:public/Formula.SimpleRepo",
+  "symbol": "Repo",
+  "version": "2.8.1",
+  "targetFramework": null,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:23:13.685 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation e2218aa84ffa477e965933f554539389 response after 21.0153 ms. PayloadBytes=1416 PayloadTruncated=false Payload={
+  "status": "insufficient_evidence",
+  "data": {
+    "symbol": null,
+    "candidates": [
+      {
+        "fullyQualifiedName": "Formula.SimpleRepo.Repo",
+        "kind": "type",
+        "signature": "public type Formula.SimpleRepo.Repo",
+        "documentation": null,
+        "assembly": "lib/net8.0/Formula.SimpleRepo.dll",
+        "targetFrameworks": [
+          "net8.0"
+        ],
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.Repo",
+        "relatedMembers": []
+      },
+      {
+        "fullyQualifiedName": "Formula.SimpleRepo.Repo.Repo",
+        "kind": "constructor",
+        "signature": "public Repo()",
+        "documentation": null,
+        "assembly": "lib/net8.0/Formula.SimpleRepo.dll",
+        "targetFrameworks": [
+          "net8.0"
+        ],
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.Repo.Repo",
+        "relatedMembers": []
+      }
+    ]
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:public/Formula.SimpleRepo",
+    "sourceId": "publicNuget",
+    "environment": "public",
+    "version": "2.8.1",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [],
+  "citations": [],
+  "warnings": [
+    {
+      "code": "ambiguous_symbol",
+      "message": "Multiple symbols matched at the same confidence tier."
+    }
+  ],
+  "errors": []
+}
+[2026-06-23 15:23:13.687 -05:00 INF] ModelContextProtocol.Server.McpServer: "get_symbol" completed. IsError = false.
+[2026-06-23 15:23:13.689 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 27.6929ms.
+[2026-06-23 15:23:16.408 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:23:16.409 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 506dee51b30b46dda6ae7582d8545bdd request. PayloadBytes=327 PayloadTruncated=false Payload={
+  "libraryId": "nuget:public/Formula.SimpleRepo",
+  "question": "Repobase Repo class generic base for entity, Get, Insert, Update, Upsert, Find with predicate, constructor connection string",
+  "version": "2.8.1",
+  "targetFramework": null,
+  "maxResults": 20,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:23:16.432 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 506dee51b30b46dda6ae7582d8545bdd response after 20.7283 ms. PayloadBytes=19355 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "fragments": [],
+    "symbols": [
+      {
+        "name": "Dapper.SimpleCRUD.Insert",
+        "signature": "public M0 Insert(System.Data.IDbConnection connection, M1 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.Insert"
+      },
+      {
+        "name": "Dapper.SimpleCRUD.Insert",
+        "signature": "public System.Nullable\u003Cint\u003E Insert(System.Data.IDbConnection connection, M0 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.Insert"
+      },
+      {
+        "name": "Dapper.SimpleCRUD.Update",
+        "signature": "public int Update(System.Data.IDbConnection connection, M0 entityToUpdate, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.Update"
+      },
+      {
+        "name": "Formula.SimpleRepo.BasicCRUDBase\u00602.Update",
+        "signature": "public int Update(T0 entityToUpdate, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.Update"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.GetConnection",
+        "signature": "public static System.Data.IDbConnection GetConnection(string connectionString)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnection"
+      },
+      {
+        "name": "Dapper.IgnoreInsertAttribute",
+        "signature": "public type Dapper.IgnoreInsertAttribute",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreInsertAttribute"
+      },
+      {
+        "name": "Dapper.IgnoreInsertAttribute.IgnoreInsertAttribute",
+        "signature": "public IgnoreInsertAttribute()",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreInsertAttribute.IgnoreInsertAttribute"
+      },
+      {
+        "name": "Dapper.IgnoreUpdateAttribute",
+        "signature": "public type Dapper.IgnoreUpdateAttribute",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreUpdateAttribute"
+      },
+      {
+        "name": "Dapper.IgnoreUpdateAttribute.IgnoreUpdateAttribute",
+        "signature": "public IgnoreUpdateAttribute()",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreUpdateAttribute.IgnoreUpdateAttribute"
+      },
+      {
+        "name": "Dapper.SimpleCRUD.InsertAsync",
+        "signature": "public System.Threading.Tasks.Task\u003CM0\u003E InsertAsync(System.Data.IDbConnection connection, M1 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.InsertAsync"
+      },
+      {
+        "name": "Dapper.SimpleCRUD.InsertAsync",
+        "signature": "public System.Threading.Tasks.Task\u003CSystem.Nullable\u003Cint\u003E\u003E InsertAsync(System.Data.IDbConnection connection, M0 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.InsertAsync"
+      },
+      {
+        "name": "Dapper.SimpleCRUD.UpdateAsync",
+        "signature": "public System.Threading.Tasks.Task\u003Cint\u003E UpdateAsync(System.Data.IDbConnection connection, M0 entityToUpdate, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout, System.Nullable\u003CSystem.Threading.CancellationToken\u003E token)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.UpdateAsync"
+      },
+      {
+        "name": "Dapper.SimpleCRUD.UpdateAsync",
+        "signature": "public System.Threading.Tasks.Task\u003Cint\u003E UpdateAsync(System.Data.IDbConnection connection, M0 entityToUpdate, string conditions, object parameters, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.UpdateAsync"
+      },
+      {
+        "name": "Formula.SimpleRepo.BasicCRUDBase\u00602.InsertAsync",
+        "signature": "public System.Threading.Tasks.Task\u003CM0\u003E InsertAsync(T0 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.InsertAsync"
+      },
+      {
+        "name": "Formula.SimpleRepo.BasicCRUDBase\u00602.InsertAsync",
+        "signature": "public System.Threading.Tasks.Task\u003CSystem.Nullable\u003Cint\u003E\u003E InsertAsync(T0 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.InsertAsync"
+      },
+      {
+        "name": "Formula.SimpleRepo.BasicCRUDBase\u00602.UpdateAsync",
+        "signature": "public System.Threading.Tasks.Task\u003Cint\u003E UpdateAsync(T0 entityToUpdate, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout, System.Nullable\u003CSystem.Threading.CancellationToken\u003E token)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.UpdateAsync"
+      },
+      {
+        "name": "Formula.SimpleRepo.BasicCRUDBase\u00602.UpdateAsync",
+        "signature": "public System.Threading.Tasks.Task\u003Cint\u003E UpdateAsync(T0 entityToUpdate, string conditions, object parameters, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.UpdateAsync"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails",
+        "signature": "public type Formula.SimpleRepo.ConnectionDetails",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.ConnectionDetails",
+        "signature": "public ConnectionDetails(string connectionName, System.Type connectionType, Dialect dialect)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionDetails"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.ConnectionName",
+        "signature": "public string ConnectionName { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionName"
+      }
+    ],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:public/Formula.SimpleRepo",
+    "sourceId": "publicNuget",
+    "environment": "public",
+    "version": "2.8.1",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.Insert",
+      "text": "public M0 Insert(System.Data.IDbConnection connection, M1 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.9,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.Insert"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.Insert",
+      "text": "public System.Nullable\u003Cint\u003E Insert(System.Data.IDbConnection connection, M0 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.9,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.Insert"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.Update",
+      "text": "public int Update(System.Data.IDbConnection connection, M0 entityToUpdate, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.9,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.Update"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.BasicCRUDBase\u00602.Update",
+      "text": "public int Update(T0 entityToUpdate, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.9,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.Update"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.GetConnection",
+      "text": "public static System.Data.IDbConnection GetConnection(string connectionString)",
+      "score": 0.85,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnection"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.IgnoreInsertAttribute",
+      "text": "public type Dapper.IgnoreInsertAttribute",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreInsertAttribute"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.IgnoreInsertAttribute.IgnoreInsertAttribute",
+      "text": "public IgnoreInsertAttribute()",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreInsertAttribute.IgnoreInsertAttribute"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.IgnoreUpdateAttribute",
+      "text": "public type Dapper.IgnoreUpdateAttribute",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreUpdateAttribute"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.IgnoreUpdateAttribute.IgnoreUpdateAttribute",
+      "text": "public IgnoreUpdateAttribute()",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreUpdateAttribute.IgnoreUpdateAttribute"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.InsertAsync",
+      "text": "public System.Threading.Tasks.Task\u003CM0\u003E InsertAsync(System.Data.IDbConnection connection, M1 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.InsertAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.InsertAsync",
+      "text": "public System.Threading.Tasks.Task\u003CSystem.Nullable\u003Cint\u003E\u003E InsertAsync(System.Data.IDbConnection connection, M0 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.InsertAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.UpdateAsync",
+      "text": "public System.Threading.Tasks.Task\u003Cint\u003E UpdateAsync(System.Data.IDbConnection connection, M0 entityToUpdate, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout, System.Nullable\u003CSystem.Threading.CancellationToken\u003E token)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.UpdateAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.UpdateAsync",
+      "text": "public System.Threading.Tasks.Task\u003Cint\u003E UpdateAsync(System.Data.IDbConnection connection, M0 entityToUpdate, string conditions, object parameters, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.UpdateAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.BasicCRUDBase\u00602.InsertAsync",
+      "text": "public System.Threading.Tasks.Task\u003CM0\u003E InsertAsync(T0 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.InsertAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.BasicCRUDBase\u00602.InsertAsync",
+      "text": "public System.Threading.Tasks.Task\u003CSystem.Nullable\u003Cint\u003E\u003E InsertAsync(T0 entityToInsert, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.InsertAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.BasicCRUDBase\u00602.UpdateAsync",
+      "text": "public System.Threading.Tasks.Task\u003Cint\u003E UpdateAsync(T0 entityToUpdate, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout, System.Nullable\u003CSystem.Threading.CancellationToken\u003E token)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.UpdateAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.BasicCRUDBase\u00602.UpdateAsync",
+      "text": "public System.Threading.Tasks.Task\u003Cint\u003E UpdateAsync(T0 entityToUpdate, string conditions, object parameters, System.Data.IDbTransaction transaction, System.Nullable\u003Cint\u003E commandTimeout)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.UpdateAsync"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails",
+      "text": "public type Formula.SimpleRepo.ConnectionDetails",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.ConnectionDetails",
+      "text": "public ConnectionDetails(string connectionName, System.Type connectionType, Dialect dialect)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionDetails"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.ConnectionName",
+      "text": "public string ConnectionName { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionName"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.Insert",
+      "label": "Dapper.SimpleCRUD.Insert",
+      "location": "M:Dapper.SimpleCRUD.Insert"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.Update",
+      "label": "Dapper.SimpleCRUD.Update",
+      "location": "M:Dapper.SimpleCRUD.Update"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.Update",
+      "label": "Formula.SimpleRepo.BasicCRUDBase\u00602.Update",
+      "location": "M:Formula.SimpleRepo.BasicCRUDBase\u00602.Update"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnection",
+      "label": "Formula.SimpleRepo.ConnectionDetails.GetConnection",
+      "location": "M:Formula.SimpleRepo.ConnectionDetails.GetConnection"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreInsertAttribute",
+      "label": "Dapper.IgnoreInsertAttribute",
+      "location": "T:Dapper.IgnoreInsertAttribute"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreInsertAttribute.IgnoreInsertAttribute",
+      "label": "Dapper.IgnoreInsertAttribute.IgnoreInsertAttribute",
+      "location": "M:Dapper.IgnoreInsertAttribute.#ctor"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreUpdateAttribute",
+      "label": "Dapper.IgnoreUpdateAttribute",
+      "location": "T:Dapper.IgnoreUpdateAttribute"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.IgnoreUpdateAttribute.IgnoreUpdateAttribute",
+      "label": "Dapper.IgnoreUpdateAttribute.IgnoreUpdateAttribute",
+      "location": "M:Dapper.IgnoreUpdateAttribute.#ctor"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.InsertAsync",
+      "label": "Dapper.SimpleCRUD.InsertAsync",
+      "location": "M:Dapper.SimpleCRUD.InsertAsync"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.UpdateAsync",
+      "label": "Dapper.SimpleCRUD.UpdateAsync",
+      "location": "M:Dapper.SimpleCRUD.UpdateAsync"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.InsertAsync",
+      "label": "Formula.SimpleRepo.BasicCRUDBase\u00602.InsertAsync",
+      "location": "M:Formula.SimpleRepo.BasicCRUDBase\u00602.InsertAsync"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602.UpdateAsync",
+      "label": "Formula.SimpleRepo.BasicCRUDBase\u00602.UpdateAsync",
+      "location": "M:Formula.SimpleRepo.BasicCRUDBase\u00602.UpdateAsync"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails",
+      "label": "Formula.SimpleRepo.ConnectionDetails",
+      "location": "T:Formula.SimpleRepo.ConnectionDetails"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionDetails",
+      "label": "Formula.SimpleRepo.ConnectionDetails.ConnectionDetails",
+      "location": "M:Formula.SimpleRepo.ConnectionDetails.#ctor"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionName",
+      "label": "Formula.SimpleRepo.ConnectionDetails.ConnectionName",
+      "location": "P:Formula.SimpleRepo.ConnectionDetails.ConnectionName"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "response_truncated",
+      "message": "Some evidence was omitted to respect the configured response limit."
+    }
+  ],
+  "errors": []
+}
+[2026-06-23 15:23:16.437 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:23:16.441 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 31.9047ms.
+[2026-06-23 15:23:17.916 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:23:17.917 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation ecb7d7d9e6614b98bb9a1105929fea15 request. PayloadBytes=354 PayloadTruncated=false Payload={
+  "libraryId": "docs:company-docs",
+  "question": "What is the standard unit test template for classes that use dependency injection, using Moq? Show the test class structure, naming, and arrange/act/assert conventions.",
+  "version": null,
+  "targetFramework": null,
+  "maxResults": 10,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:23:17.928 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation ecb7d7d9e6614b98bb9a1105929fea15 response after 8.8861 ms. PayloadBytes=548 PayloadTruncated=false Payload={
+  "status": "insufficient_evidence",
+  "data": {
+    "fragments": [],
+    "symbols": [],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "docs:company-docs",
+    "sourceId": "company-docs",
+    "environment": null,
+    "version": null,
+    "versionSelectionReason": null
+  },
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": [
+    {
+      "code": "insufficient_evidence",
+      "message": "The company documentation is indexed, but no sufficiently relevant evidence was found."
+    }
+  ]
+}
+[2026-06-23 15:23:17.931 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:23:17.933 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 16.0134ms.
+[2026-06-23 15:23:42.393 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:23:42.395 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation ee8a63f734dd4a888ba3e8bb216d0d88 request. PayloadBytes=210 PayloadTruncated=false Payload={
+  "libraryId": "nuget:public/Formula.SimpleRepo",
+  "symbol": "Formula.SimpleRepo.Repo\u00602",
+  "version": "2.8.1",
+  "targetFramework": null,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:23:42.402 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation ee8a63f734dd4a888ba3e8bb216d0d88 response after 4.8292 ms. PayloadBytes=549 PayloadTruncated=false Payload={
+  "status": "not_found",
+  "data": {
+    "symbol": null,
+    "candidates": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:public/Formula.SimpleRepo",
+    "sourceId": "publicNuget",
+    "environment": "public",
+    "version": "2.8.1",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [],
+  "citations": [],
+  "warnings": [],
+  "errors": [
+    {
+      "code": "symbol_not_found",
+      "message": "Symbol \u0027Formula.SimpleRepo.Repo\u00602\u0027 was not found in the selected package version."
+    }
+  ]
+}
+[2026-06-23 15:23:42.404 -05:00 INF] ModelContextProtocol.Server.McpServer: "get_symbol" completed. IsError = false.
+[2026-06-23 15:23:42.406 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 11.2838ms.
+[2026-06-23 15:23:44.152 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:23:44.154 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 0b0388be94c14803a8c5f4632a0fae5f request. PayloadBytes=372 PayloadTruncated=false Payload={
+  "libraryId": "nuget:public/Formula.SimpleRepo",
+  "question": "Repo class generic type parameters, Bootstrapper register connections, Dialect.SQLite, Get by id, Find, how to subclass Repo for an entity model and the Bootstrap method",
+  "version": "2.8.1",
+  "targetFramework": null,
+  "maxResults": 25,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:23:44.173 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 0b0388be94c14803a8c5f4632a0fae5f response after 16.8945 ms. PayloadBytes=12249 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "fragments": [],
+    "symbols": [
+      {
+        "name": "Dialect",
+        "signature": "public type Dialect",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect"
+      },
+      {
+        "name": "Dapper.TableAttribute.Parameters",
+        "signature": "public string[] Parameters { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.TableAttribute.Parameters"
+      },
+      {
+        "name": "Formula.SimpleRepo.Bindable.Parameters",
+        "signature": "public System.Collections.Generic.Dictionary\u003Cstring, object\u003E Parameters { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.Bindable.Parameters"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.Dialect",
+        "signature": "public Dialect Dialect { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.Dialect"
+      },
+      {
+        "name": "Formula.SimpleRepo.IBindable.Parameters",
+        "signature": "public System.Collections.Generic.Dictionary\u003Cstring, object\u003E Parameters { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.IBindable.Parameters"
+      },
+      {
+        "name": "Dapper.SimpleCRUD.GetDialect",
+        "signature": "public string GetDialect()",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.GetDialect"
+      },
+      {
+        "name": "Dapper.SimpleCRUD.SetDialect",
+        "signature": "public void SetDialect(Dialect dialect)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.SetDialect"
+      },
+      {
+        "name": "Formula.SimpleRepo.BuilderBase\u00601.ClearParameters",
+        "signature": "public void ClearParameters()",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BuilderBase%601.ClearParameters"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.GetDialect",
+        "signature": "public static Dialect GetDialect()",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetDialect"
+      },
+      {
+        "name": "Formula.SimpleRepo.IReadOnlyRepository\u00601.ClearParameters",
+        "signature": "public void ClearParameters()",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.IReadOnlyRepository%601.ClearParameters"
+      },
+      {
+        "name": "Dapper.TableAttribute.NoParametersFunction",
+        "signature": "public bool NoParametersFunction { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.TableAttribute.NoParametersFunction"
+      },
+      {
+        "name": "Dialect.DB2",
+        "signature": "public Dialect DB2",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.DB2"
+      },
+      {
+        "name": "Dialect.MySQL",
+        "signature": "public Dialect MySQL",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.MySQL"
+      },
+      {
+        "name": "Dialect.PostgreSQL",
+        "signature": "public Dialect PostgreSQL",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.PostgreSQL"
+      },
+      {
+        "name": "Dialect.SQLServer",
+        "signature": "public Dialect SQLServer",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.SQLServer"
+      },
+      {
+        "name": "Dialect.SQLite",
+        "signature": "public Dialect SQLite",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.SQLite"
+      }
+    ],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:public/Formula.SimpleRepo",
+    "sourceId": "publicNuget",
+    "environment": "public",
+    "version": "2.8.1",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "Dialect",
+      "text": "public type Dialect",
+      "score": 1,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.TableAttribute.Parameters",
+      "text": "public string[] Parameters { get; set;  }",
+      "score": 0.9,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.TableAttribute.Parameters"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.Bindable.Parameters",
+      "text": "public System.Collections.Generic.Dictionary\u003Cstring, object\u003E Parameters { get; set;  }",
+      "score": 0.9,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.Bindable.Parameters"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.Dialect",
+      "text": "public Dialect Dialect { get; set;  }",
+      "score": 0.9,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.Dialect"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.IBindable.Parameters",
+      "text": "public System.Collections.Generic.Dictionary\u003Cstring, object\u003E Parameters { get; set;  }",
+      "score": 0.9,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.IBindable.Parameters"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.GetDialect",
+      "text": "public string GetDialect()",
+      "score": 0.85,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.GetDialect"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.SimpleCRUD.SetDialect",
+      "text": "public void SetDialect(Dialect dialect)",
+      "score": 0.85,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.SetDialect"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.BuilderBase\u00601.ClearParameters",
+      "text": "public void ClearParameters()",
+      "score": 0.85,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BuilderBase%601.ClearParameters"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.GetDialect",
+      "text": "public static Dialect GetDialect()",
+      "score": 0.85,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetDialect"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.IReadOnlyRepository\u00601.ClearParameters",
+      "text": "public void ClearParameters()",
+      "score": 0.85,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.IReadOnlyRepository%601.ClearParameters"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dapper.TableAttribute.NoParametersFunction",
+      "text": "public bool NoParametersFunction { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.TableAttribute.NoParametersFunction"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dialect.DB2",
+      "text": "public Dialect DB2",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.DB2"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dialect.MySQL",
+      "text": "public Dialect MySQL",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.MySQL"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dialect.PostgreSQL",
+      "text": "public Dialect PostgreSQL",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.PostgreSQL"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dialect.SQLServer",
+      "text": "public Dialect SQLServer",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.SQLServer"
+    },
+    {
+      "kind": "symbol",
+      "title": "Dialect.SQLite",
+      "text": "public Dialect SQLite",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.SQLite"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect",
+      "label": "Dialect",
+      "location": "T:Dialect"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.TableAttribute.Parameters",
+      "label": "Dapper.TableAttribute.Parameters",
+      "location": "P:Dapper.TableAttribute.Parameters"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.Bindable.Parameters",
+      "label": "Formula.SimpleRepo.Bindable.Parameters",
+      "location": "P:Formula.SimpleRepo.Bindable.Parameters"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.Dialect",
+      "label": "Formula.SimpleRepo.ConnectionDetails.Dialect",
+      "location": "P:Formula.SimpleRepo.ConnectionDetails.Dialect"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.IBindable.Parameters",
+      "label": "Formula.SimpleRepo.IBindable.Parameters",
+      "location": "P:Formula.SimpleRepo.IBindable.Parameters"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.GetDialect",
+      "label": "Dapper.SimpleCRUD.GetDialect",
+      "location": "M:Dapper.SimpleCRUD.GetDialect"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.SimpleCRUD.SetDialect",
+      "label": "Dapper.SimpleCRUD.SetDialect",
+      "location": "M:Dapper.SimpleCRUD.SetDialect"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BuilderBase%601.ClearParameters",
+      "label": "Formula.SimpleRepo.BuilderBase\u00601.ClearParameters",
+      "location": "M:Formula.SimpleRepo.BuilderBase\u00601.ClearParameters"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetDialect",
+      "label": "Formula.SimpleRepo.ConnectionDetails.GetDialect",
+      "location": "M:Formula.SimpleRepo.ConnectionDetails.GetDialect"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.IReadOnlyRepository%601.ClearParameters",
+      "label": "Formula.SimpleRepo.IReadOnlyRepository\u00601.ClearParameters",
+      "location": "M:Formula.SimpleRepo.IReadOnlyRepository\u00601.ClearParameters"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dapper.TableAttribute.NoParametersFunction",
+      "label": "Dapper.TableAttribute.NoParametersFunction",
+      "location": "P:Dapper.TableAttribute.NoParametersFunction"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.DB2",
+      "label": "Dialect.DB2",
+      "location": "F:Dialect.DB2"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.MySQL",
+      "label": "Dialect.MySQL",
+      "location": "F:Dialect.MySQL"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.PostgreSQL",
+      "label": "Dialect.PostgreSQL",
+      "location": "F:Dialect.PostgreSQL"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.SQLServer",
+      "label": "Dialect.SQLServer",
+      "location": "F:Dialect.SQLServer"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Dialect.SQLite",
+      "label": "Dialect.SQLite",
+      "location": "F:Dialect.SQLite"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:23:44.176 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:23:44.180 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 26.6454ms.
+[2026-06-23 15:24:33.365 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:24:33.367 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 710eba1cab1f44c3a1e9a982e2042142 request. PayloadBytes=370 PayloadTruncated=false Payload={
+  "libraryId": "nuget:public/Formula.SimpleRepo",
+  "question": "Show a complete example of subclassing Repo to create a repository: class declaration, base constructor with connection string or IConfiguration, and a Get/Insert call.",
+  "version": "2.8.1",
+  "targetFramework": null,
+  "maxResults": 8,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:24:33.397 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool query_docs invocation 710eba1cab1f44c3a1e9a982e2042142 response after 27.7617 ms. PayloadBytes=7691 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "fragments": [],
+    "symbols": [
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.GetConnection",
+        "signature": "public static System.Data.IDbConnection GetConnection(string connectionString)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnection"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails",
+        "signature": "public type Formula.SimpleRepo.ConnectionDetails",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.ConnectionDetails",
+        "signature": "public ConnectionDetails(string connectionName, System.Type connectionType, Dialect dialect)",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionDetails"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.ConnectionName",
+        "signature": "public string ConnectionName { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionName"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.ConnectionType",
+        "signature": "public System.Type ConnectionType { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionType"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.Dialect",
+        "signature": "public Dialect Dialect { get; set;  }",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.Dialect"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.GetConnectionName",
+        "signature": "public static string GetConnectionName()",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnectionName"
+      },
+      {
+        "name": "Formula.SimpleRepo.ConnectionDetails.GetDialect",
+        "signature": "public static Dialect GetDialect()",
+        "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetDialect"
+      }
+    ],
+    "examples": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:public/Formula.SimpleRepo",
+    "sourceId": "publicNuget",
+    "environment": "public",
+    "version": "2.8.1",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.GetConnection",
+      "text": "public static System.Data.IDbConnection GetConnection(string connectionString)",
+      "score": 0.85,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnection"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails",
+      "text": "public type Formula.SimpleRepo.ConnectionDetails",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.ConnectionDetails",
+      "text": "public ConnectionDetails(string connectionName, System.Type connectionType, Dialect dialect)",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionDetails"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.ConnectionName",
+      "text": "public string ConnectionName { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionName"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.ConnectionType",
+      "text": "public System.Type ConnectionType { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionType"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.Dialect",
+      "text": "public Dialect Dialect { get; set;  }",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.Dialect"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.GetConnectionName",
+      "text": "public static string GetConnectionName()",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnectionName"
+    },
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.ConnectionDetails.GetDialect",
+      "text": "public static Dialect GetDialect()",
+      "score": 0.8,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetDialect"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnection",
+      "label": "Formula.SimpleRepo.ConnectionDetails.GetConnection",
+      "location": "M:Formula.SimpleRepo.ConnectionDetails.GetConnection"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails",
+      "label": "Formula.SimpleRepo.ConnectionDetails",
+      "location": "T:Formula.SimpleRepo.ConnectionDetails"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionDetails",
+      "label": "Formula.SimpleRepo.ConnectionDetails.ConnectionDetails",
+      "location": "M:Formula.SimpleRepo.ConnectionDetails.#ctor"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionName",
+      "label": "Formula.SimpleRepo.ConnectionDetails.ConnectionName",
+      "location": "P:Formula.SimpleRepo.ConnectionDetails.ConnectionName"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.ConnectionType",
+      "label": "Formula.SimpleRepo.ConnectionDetails.ConnectionType",
+      "location": "P:Formula.SimpleRepo.ConnectionDetails.ConnectionType"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.Dialect",
+      "label": "Formula.SimpleRepo.ConnectionDetails.Dialect",
+      "location": "P:Formula.SimpleRepo.ConnectionDetails.Dialect"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetConnectionName",
+      "label": "Formula.SimpleRepo.ConnectionDetails.GetConnectionName",
+      "location": "M:Formula.SimpleRepo.ConnectionDetails.GetConnectionName"
+    },
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.ConnectionDetails.GetDialect",
+      "label": "Formula.SimpleRepo.ConnectionDetails.GetDialect",
+      "location": "M:Formula.SimpleRepo.ConnectionDetails.GetDialect"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "response_truncated",
+      "message": "Some evidence was omitted to respect the configured response limit."
+    }
+  ],
+  "errors": []
+}
+[2026-06-23 15:24:33.400 -05:00 INF] ModelContextProtocol.Server.McpServer: "query_docs" completed. IsError = false.
+[2026-06-23 15:24:33.404 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 36.6579ms.
+[2026-06-23 15:24:35.150 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:24:35.153 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation 3c925e46635e44f8a4d1b03d89868b9c request. PayloadBytes=219 PayloadTruncated=false Payload={
+  "libraryId": "nuget:public/Formula.SimpleRepo",
+  "symbol": "Formula.SimpleRepo.BasicCRUDBase\u00602",
+  "version": "2.8.1",
+  "targetFramework": null,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:24:35.159 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation 3c925e46635e44f8a4d1b03d89868b9c response after 4.5286 ms. PayloadBytes=1381 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "symbol": {
+      "fullyQualifiedName": "Formula.SimpleRepo.BasicCRUDBase\u00602",
+      "kind": "type",
+      "signature": "public type Formula.SimpleRepo.BasicCRUDBase\u00602",
+      "documentation": null,
+      "assembly": "lib/net8.0/Formula.SimpleRepo.dll",
+      "targetFrameworks": [
+        "net8.0"
+      ],
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602",
+      "relatedMembers": []
+    },
+    "candidates": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:public/Formula.SimpleRepo",
+    "sourceId": "publicNuget",
+    "environment": "public",
+    "version": "2.8.1",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "Formula.SimpleRepo.BasicCRUDBase\u00602",
+      "text": "public type Formula.SimpleRepo.BasicCRUDBase\u00602",
+      "score": 1,
+      "citationUri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://publicNuget/Formula.SimpleRepo/2.8.1/symbol/Formula.SimpleRepo.BasicCRUDBase%602",
+      "label": "Formula.SimpleRepo.BasicCRUDBase\u00602",
+      "location": "T:Formula.SimpleRepo.BasicCRUDBase\u00602"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:24:35.161 -05:00 INF] ModelContextProtocol.Server.McpServer: "get_symbol" completed. IsError = false.
+[2026-06-23 15:24:35.164 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 11.1619ms.
+[2026-06-23 15:28:36.737 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler called.
+[2026-06-23 15:28:36.739 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation 9d0fa8af272c418396728f23befc5876 request. PayloadBytes=220 PayloadTruncated=false Payload={
+  "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+  "symbol": "OpenMeteo.Api.Client.LocationResult.Name",
+  "version": "1.0.0",
+  "targetFramework": null,
+  "projectVersion": null,
+  "includePrerelease": false
+}
+[2026-06-23 15:28:36.756 -05:00 DBG] DevContextMcp.Server.Tools.ToolInvocationLogger: MCP tool get_symbol invocation 9d0fa8af272c418396728f23befc5876 response after 13.9563 ms. PayloadBytes=3530 PayloadTruncated=false Payload={
+  "status": "ok",
+  "data": {
+    "symbol": {
+      "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Name",
+      "kind": "property",
+      "signature": "public string Name { get; set;  }",
+      "documentation": null,
+      "assembly": "lib/net10.0/OpenMeteo.Api.Client.dll",
+      "targetFrameworks": [
+        "net10.0"
+      ],
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Name",
+      "relatedMembers": [
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.AdditionalProperties",
+          "kind": "property",
+          "signature": "public System.Collections.Generic.IDictionary\u003Cstring, object\u003E AdditionalProperties { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Admin1",
+          "kind": "property",
+          "signature": "public string Admin1 { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Admin1_id",
+          "kind": "property",
+          "signature": "public System.Nullable\u003Cint\u003E Admin1_id { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Admin2",
+          "kind": "property",
+          "signature": "public string Admin2 { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Admin2_id",
+          "kind": "property",
+          "signature": "public System.Nullable\u003Cint\u003E Admin2_id { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Admin3",
+          "kind": "property",
+          "signature": "public string Admin3 { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Admin3_id",
+          "kind": "property",
+          "signature": "public System.Nullable\u003Cint\u003E Admin3_id { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Admin4",
+          "kind": "property",
+          "signature": "public string Admin4 { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Admin4_id",
+          "kind": "property",
+          "signature": "public System.Nullable\u003Cint\u003E Admin4_id { get; set;  }"
+        },
+        {
+          "fullyQualifiedName": "OpenMeteo.Api.Client.LocationResult.Country",
+          "kind": "property",
+          "signature": "public string Country { get; set;  }"
+        }
+      ]
+    },
+    "candidates": []
+  },
+  "resolvedContext": {
+    "libraryId": "nuget:prod/OpenMeteo.Api.Client",
+    "sourceId": "prodNuget",
+    "environment": "prod",
+    "version": "1.0.0",
+    "versionSelectionReason": "requested"
+  },
+  "evidence": [
+    {
+      "kind": "symbol",
+      "title": "OpenMeteo.Api.Client.LocationResult.Name",
+      "text": "public string Name { get; set;  }",
+      "score": 1,
+      "citationUri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Name"
+    }
+  ],
+  "citations": [
+    {
+      "uri": "nuget://prodNuget/OpenMeteo.Api.Client/1.0.0/symbol/OpenMeteo.Api.Client.LocationResult.Name",
+      "label": "OpenMeteo.Api.Client.LocationResult.Name",
+      "location": "P:OpenMeteo.Api.Client.LocationResult.Name"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
+[2026-06-23 15:28:36.759 -05:00 INF] ModelContextProtocol.Server.McpServer: "get_symbol" completed. IsError = false.
+[2026-06-23 15:28:36.764 -05:00 INF] ModelContextProtocol.Server.McpServer: Server (DevContextMcp.Server 1.0.0.0) method 'tools/call' request handler completed in 25.5178ms.

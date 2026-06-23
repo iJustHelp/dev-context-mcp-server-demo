@@ -1,22 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <RootNamespace>STI.City.Data</RootNamespace>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\STI.City.Core\STI.City.Core.csproj" />
+    <!-- Open-Meteo geocoding client (prod feed). -->
+    <PackageReference Include="OpenMeteo.Api.Client" Version="1.0.0" />
+    <!--
+      SQLite cache. Formula.SimpleRepo's detailed repository API could not be verified
+      through dev_context (insufficient_evidence), so persistence is implemented on the
+      same foundation it wraps — Dapper over Microsoft.Data.Sqlite — behind the Core
+      IGeocodingCacheRepository abstraction. See claude/README.md.
+    -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Formula.SimpleRepo" Version="2.8.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.9" />
-    <PackageReference Include="Dapper" Version="2.1.35" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.8" />
+    <ProjectReference Include="..\STI.City.Core\STI.City.Core.csproj" />
   </ItemGroup>
 
 </Project>

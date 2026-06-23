@@ -1,19 +1,26 @@
+using Demo.Cities;
 using Microsoft.Extensions.DependencyInjection;
+using STI.City.Core.Abstractions;
 using STI.City.Core.Services;
+using STI.City.Core.Time;
 
 namespace STI.City.Core.DependencyInjection;
 
 public static class CoreServiceCollectionExtensions
 {
     /// <summary>
-    /// Registers the application geocoding service (scoped) and the system
-    /// <see cref="TimeProvider"/> (singleton). Package and repository
-    /// registrations are added by their own extensions.
+    /// Registers the Demo.Cities services (<c>ICityService</c>, <c>IUsaCityService</c>),
+    /// the system clock, the city catalog, and the geocoding orchestration service.
     /// </summary>
     public static IServiceCollection AddCityCore(this IServiceCollection services)
     {
-        services.AddSingleton(TimeProvider.System);
+        // Demo.Cities QA package: registers ICityService and IUsaCityService.
+        services.AddDemoCities();
+
+        services.AddSingleton<IClock, SystemClock>();
+        services.AddScoped<ICityCatalog, CityCatalog>();
         services.AddScoped<ICityGeocodingService, CityGeocodingService>();
+
         return services;
     }
 }
