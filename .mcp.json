@@ -1,13 +1,15 @@
 {
   "mcpServers": {
     "context7": {
-      "url": "https://mcp.context7.com/mcp"
+      "url": "https://mcp.context7.com/mcp",
+        "timeout": 10000
     },
-    "devcontext": {
+    "dev_context": {
       "type": "http",
       "url": "http://127.0.0.1:2222/mcp",
+      "timeout": 10000,
       "headers": {
-        "X-User-Name": "sbuyevich"
+        "X-User-Name": "${USERNAME}"
       }
     }
   }

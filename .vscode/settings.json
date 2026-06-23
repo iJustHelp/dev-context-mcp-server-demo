@@ -1,0 +1,9 @@
+{
+    "chat.mcp.serverSampling": {
+        "dev-context-mcp-server-demo/.mcp.json: devcontext": {
+            "allowedModels": [
+                "copilotcli/auto"
+            ]
+        }
+    }
+}
