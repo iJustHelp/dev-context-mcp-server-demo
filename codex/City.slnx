@@ -1,5 +1,8 @@
 <Solution>
-  <Folder Name="/http-tests/" />
+  <Folder Name="/http-tests/">
+    <File Path="../http-tests/http-client.env.json" />
+    <File Path="../http-tests/tests.http" />
+  </Folder>
   <Project Path="STI.City.API/STI.City.API.csproj" />
   <Project Path="STI.City.Core/STI.City.Core.csproj" />
   <Project Path="STI.City.Data/STI.City.Data.csproj" />
