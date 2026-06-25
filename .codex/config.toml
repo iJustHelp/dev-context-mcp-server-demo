@@ -1,3 +1,9 @@
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
+enabled = true
+required = false
+tool_timeout_sec = 10
+
 [mcp_servers.dev_context]
 url = "http://127.0.0.1:2222/mcp"
 enabled = true
