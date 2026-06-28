@@ -1,5 +1,5 @@
 @host = {{host}}
-@city = london
+//@city = london
 @city = new york
 
 ### GET all city names -> 200 application/json, string[]

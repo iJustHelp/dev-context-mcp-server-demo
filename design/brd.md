@@ -13,10 +13,9 @@ Use projects name and structure defined in DevContext company docs.
 ## Endpoints
 
 - `GET /city`
-  - Return all city names from `Demo.Cities.ICityService`.
+  - Return all city names.
 - `GET /city/usa`
-  - Return U.S. city names from the QA-only
-    `Demo.Cities.IUsaCityService`.
+  - Return U.S. city names from the QA-only   
 - `GET /city/{cityName}/location`
   - Return the matched city's latitude and longitude.
 - `GET /city/{cityName}/population`
@@ -55,7 +54,7 @@ DevContext before implementation; do not infer unavailable package APIs.
 
 - Target .NET 10.
 - Prefer QA versions of internal NuGet packages when available.
-- Use the QA `Demo.Cities` package because it provides `IUsaCityService`.
+- Use the QA `Demo.Cities` package 
 - Use `OpenMeteo.Api.Client` for Open-Meteo geocoding requests.
 - Register package services through their dependency-injection extensions.
 
